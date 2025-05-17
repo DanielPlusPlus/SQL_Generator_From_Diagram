@@ -3,6 +3,8 @@ from PySide6.QtCore import Qt, QPoint
 from app.enums.TableContextMenuEnum import TableContextMenuEnum
 
 
+# trzy listy w modelu,
+
 class DrawingAreaController:
     def __init__(self):
         self.DrawingAreaView = None
@@ -32,6 +34,9 @@ class DrawingAreaController:
             if self.ToolBarController.getCreateTableToolStatus():
                 self.TablesController.addTable(self.cursorPosition)
                 self.ToolBarController.unselectCreateTableTool()
+            elif self.ToolBarController.getCreate_1_1_RelStatus():
+                print("1_1")
+                self.ToolBarController.unselectCreate_1_1_Rel()
             elif self.TablesController.getTableInTransferStatus():
                 self.TablesController.unselectTableInTransfer(self.cursorPosition)
             elif self.TablesController.getContextMenuAtWorkStatus():
@@ -40,7 +45,7 @@ class DrawingAreaController:
                 self.TablesController.selectTableInTransfer(self.cursorPosition)
         elif event.button() == Qt.MouseButton.RightButton:
             if self.ToolBarController.getCreateTableToolStatus():
-                pass  # miejsce na anulowanie rysowania self.ToolBarController.unselectCreateTableTool()
+                self.ToolBarController.unselectCreateTableTool()  # anulowanie rysowania (czy dobrze?)
             elif self.TablesController.getTableInTransferStatus():
                 pass
             else:
