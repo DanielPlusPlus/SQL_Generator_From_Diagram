@@ -12,6 +12,7 @@ from app.controllers.DrawingAreaController import DrawingAreaController
 from app.controllers.TablesController import TablesController
 from app.controllers.RelationshipsController import RelationshipsController
 from app.models.TablesModel import TablesModel
+from app.models.RelationshipsModel import RelationshipsModel
 
 
 class MainWindow(QMainWindow):
@@ -33,6 +34,7 @@ class MainWindow(QMainWindow):
 
         # models
         self.TablesModel = TablesModel()
+        self.RelationshipsModel = RelationshipsModel()
 
         # views
         self.ScrollAreaView = ScrollAreaView(self)
@@ -41,14 +43,15 @@ class MainWindow(QMainWindow):
         self.DrawingAreaView.setupUI()
         self.MainWindowView.addCentralWidget(self.ScrollAreaView)
         self.TablesView = TablesView(self.TablesModel, self.DrawingAreaView)
-        self.RelationshipsView = RelationshipsView(self.DrawingAreaView)
+        self.RelationshipsView = RelationshipsView(self.RelationshipsModel, self.DrawingAreaView)
 
         # controllers
         self.ToolBarController.setTablesModel(self.TablesModel)
         self.DrawingAreaController.setDrawingAreaView(self.DrawingAreaView)
         self.DrawingAreaController.setMainWindowController(self.MainWindowController)
         self.TablesController = TablesController(self, self.TablesView, self.TablesModel)
-        self.RelationshipsController = RelationshipsController(self.RelationshipsView, self.TablesModel)
+        self.RelationshipsController = RelationshipsController(self.RelationshipsView, self.RelationshipsModel,
+                                                               self.TablesModel)
         self.DrawingAreaController.setToolBarController(self.ToolBarController)
         self.DrawingAreaController.setTablesController(self.TablesController)
         self.DrawingAreaController.setRelationshipsController(self.RelationshipsController)

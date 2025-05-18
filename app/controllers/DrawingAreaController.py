@@ -40,7 +40,11 @@ class DrawingAreaController:
                 self.TablesController.addTable(self.cursorPosition)
                 self.ToolBarController.unselectCreateTableTool()
             elif self.ToolBarController.getCreate_1_1_RelStatus() == RelStatusEnum.IN_MOTION_BEFORE_CLICK:
-
+                self.RelationshipsController.setFirstClickedTable(self.cursorPosition)
+                self.ToolBarController.changeStatusToAfterClick()
+            elif self.ToolBarController.getCreate_1_1_RelStatus():
+                self.RelationshipsController.setSecondClickedTable(self.cursorPosition)
+                self.RelationshipsController.add_1_1_Relationship()
                 self.ToolBarController.unselectCreate_1_1_Rel()
             elif self.TablesController.getTableInTransferStatus():
                 self.TablesController.unselectTableInTransfer(self.cursorPosition)
@@ -67,3 +71,4 @@ class DrawingAreaController:
         elif self.TablesController.getTableInTransferStatus():
             self.TablesController.updateTempTablePosition(self.cursorPosition)
         self.TablesController.selectDrawTables()
+        self.RelationshipsController.selectDrawRelationships()

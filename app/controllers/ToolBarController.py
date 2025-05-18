@@ -1,5 +1,6 @@
 from app.enums.RelStatusEnum import RelStatusEnum
 
+
 class ToolBarController:
     def __init__(self, ToolBarView):
         self.TablesModel = None
@@ -29,6 +30,9 @@ class ToolBarController:
 
     def selectCreate_1_1_Rel(self):
         self.is_1_1_RelSelected = RelStatusEnum.IN_MOTION_BEFORE_CLICK
+
+    def changeStatusToAfterClick(self):
+        self.is_1_1_RelSelected = RelStatusEnum.IN_MOTION_AFTER_CLICK
 
     def unselectCreate_1_1_Rel(self):
         self.is_1_1_RelSelected = RelStatusEnum.NOT_IN_MOTION
