@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, QPoint
 
+from app.enums.RelStatusEnum import RelStatusEnum
 from app.enums.TableContextMenuEnum import TableContextMenuEnum
 
 
@@ -12,6 +13,7 @@ class DrawingAreaController:
         self.MainWindowController = None
         self.ToolBarController = None
         self.TablesController = None
+        self.RelationshipsController = None
 
     def setDrawingAreaView(self, DrawingAreaView):
         self.DrawingAreaView = DrawingAreaView
@@ -25,6 +27,9 @@ class DrawingAreaController:
     def setTablesController(self, TablesController):
         self.TablesController = TablesController
 
+    def setRelationshipsController(self, RelationshipsController):
+        self.RelationshipsController = RelationshipsController
+
     def handleMouseMove(self, event):
         self.cursorPosition = event.position().toPoint()
         self.MainWindowController.updateStatusBarInView(self.cursorPosition)
@@ -34,8 +39,8 @@ class DrawingAreaController:
             if self.ToolBarController.getCreateTableToolStatus():
                 self.TablesController.addTable(self.cursorPosition)
                 self.ToolBarController.unselectCreateTableTool()
-            elif self.ToolBarController.getCreate_1_1_RelStatus():
-                print("1_1")
+            elif self.ToolBarController.getCreate_1_1_RelStatus() == RelStatusEnum.IN_MOTION_BEFORE_CLICK:
+
                 self.ToolBarController.unselectCreate_1_1_Rel()
             elif self.TablesController.getTableInTransferStatus():
                 self.TablesController.unselectTableInTransfer(self.cursorPosition)
