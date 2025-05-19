@@ -16,7 +16,7 @@ class TablesController:
         self.TableContextMenuView = TableContextMenuView(self.ParentWindow)
         self.TableContextMenuView.setup_UI()
         self.TableContextMenuController = TableContextMenuController(self.TableContextMenuView)
-        self.TempTable = None
+        self.TableInTransfer = None
         self.isTableInTransfer = False
         self.isContextMenuAtWork = False
 
@@ -45,17 +45,17 @@ class TablesController:
                 print("Cancel")
 
     def selectTableInTransfer(self, cursorPosition):
-        self.TempTable = self.TablesModel.getTableFromPosition(cursorPosition)
-        if self.TempTable is not None:
+        self.TableInTransfer = self.TablesModel.getTableFromPosition(cursorPosition)
+        if self.TableInTransfer is not None:
             self.isTableInTransfer = True
 
     def unselectTableInTransfer(self, cursorPosition):
-        self.TempTable.changeTablePosition(cursorPosition.x(), cursorPosition.y())
+        self.TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y())
         self.isTableInTransfer = False
-        self.TempTable = None
+        self.TableInTransfer = None
 
-    def updateTempTablePosition(self, cursorPosition):
-        self.TempTable.changeTablePosition(cursorPosition.x(), cursorPosition.y())
+    def updateTableInTransferPosition(self, cursorPosition):
+        self.TableInTransfer.changeTablePosition(cursorPosition.x(), cursorPosition.y())
 
     def selectDrawTempTable(self, cursorPosition):
         self.TablesView.drawTempTable(cursorPosition)

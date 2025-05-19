@@ -29,3 +29,6 @@ class RelationshipsModel:
 
     def getRelationships(self):
         return self.relationships
+
+    def deleteSelectedRelationship(self, SelectedRelationship):
+        self.relationships.remove(SelectedRelationship)
