@@ -9,10 +9,11 @@ from app.enums.TableContextMenuEnum import TableContextMenuEnum
 
 
 class TablesController:
-    def __init__(self, ParentWindow, TablesView, TablesModel):
+    def __init__(self, ParentWindow, TablesView, TablesModel, RelationshipsController):
         self.ParentWindow = ParentWindow
         self.TablesView = TablesView
         self.TablesModel = TablesModel
+        self.RelationshipsController = RelationshipsController
         self.TableContextMenuView = TableContextMenuView(self.ParentWindow)
         self.TableContextMenuView.setup_UI()
         self.TableContextMenuController = TableContextMenuController(self.TableContextMenuView)
@@ -31,6 +32,7 @@ class TablesController:
             ConfirmationDialog = ConfirmationDialogView(self.ParentWindow, dialogTitle, dialogText)
             if ConfirmationDialog.displayDialog():
                 self.TablesModel.deleteSelectedTable(ObtainedTable)
+                self.RelationshipsController.deleteRelationshipByTable(ObtainedTable)
 
     def editTable(self, cursorPosition):
         ObtainedTable = self.TablesModel.getTableFromPosition(cursorPosition)

@@ -26,6 +26,3 @@ class DrawingAreaView(QWidget):
 
     def paintEvent(self, event):
         self.DrawingAreaController.handlePaintEvent()
-
-    def convertCursorPositionToGlobal(self, cursorPosition):
-        return self.mapToGlobal(cursorPosition)

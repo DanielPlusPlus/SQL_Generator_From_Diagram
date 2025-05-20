@@ -46,10 +46,9 @@ class MainWindow(QMainWindow):
         self.RelationshipsView = RelationshipsView(self.RelationshipsModel, self.DrawingAreaView)
 
         # controllers
-        self.ToolBarController.setTablesModel(self.TablesModel)
         self.DrawingAreaController.setDrawingAreaView(self.DrawingAreaView)
         self.DrawingAreaController.setMainWindowController(self.MainWindowController)
-        self.TablesController = TablesController(self, self.TablesView, self.TablesModel)
+        self.TablesController = TablesController(self, self.TablesView, self.TablesModel, self.RelationshipsModel)
         self.RelationshipsController = RelationshipsController(self.RelationshipsView, self.RelationshipsModel,
                                                                self.TablesModel)
         self.DrawingAreaController.setToolBarController(self.ToolBarController)

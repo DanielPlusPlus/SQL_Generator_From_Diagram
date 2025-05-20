@@ -7,6 +7,15 @@ class RelationshipModel:
         self.SecondTable = SecondTable
         self.relationshipType = relationshipType
 
+    def getFirstTable(self):
+        return self.FirstTable
+
+    def getSecondTable(self):
+        return self.SecondTable
+
+    def getRelationshipType(self):
+        return self.relationshipType
+
 
 class RelationshipsModel:
     def __init__(self):
@@ -32,3 +41,9 @@ class RelationshipsModel:
 
     def deleteSelectedRelationship(self, SelectedRelationship):
         self.relationships.remove(SelectedRelationship)
+
+    def deleteRelationshipByTable(self, ObtainedTable):
+        self.relationships = [
+            relationship for relationship in self.relationships
+            if relationship.getFirstTable() is not ObtainedTable and relationship.getSecondTable() is not ObtainedTable
+        ]

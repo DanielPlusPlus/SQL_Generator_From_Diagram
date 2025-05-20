@@ -3,7 +3,6 @@ from app.enums.RelStatusEnum import RelStatusEnum
 
 class ToolBarController:
     def __init__(self, ToolBarView):
-        self.TablesModel = None
         self.isTableSelected = False
         self.is_1_1_RelSelected = RelStatusEnum.NOT_IN_MOTION
         self.is_1_n_RelSelected = RelStatusEnum.NOT_IN_MOTION
@@ -15,9 +14,6 @@ class ToolBarController:
         ToolBarView.actionSaveDiagram.triggered.connect(self.selectSaveDiagram)
         ToolBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQL)
         # trzeba stworzyc anulowanie akcji
-
-    def setTablesModel(self, TablesModel):
-        self.TablesModel = TablesModel
 
     def selectCreateTableTool(self):
         self.isTableSelected = True
@@ -31,7 +27,7 @@ class ToolBarController:
     def selectCreate_1_1_Rel(self):
         self.is_1_1_RelSelected = RelStatusEnum.IN_MOTION_BEFORE_CLICK
 
-    def changeStatusToAfterClick(self):
+    def changeStatusToAfterClick_1_1_Rel(self):
         self.is_1_1_RelSelected = RelStatusEnum.IN_MOTION_AFTER_CLICK
 
     def unselectCreate_1_1_Rel(self):
@@ -43,6 +39,9 @@ class ToolBarController:
     def selectCreate_1_n_Rel(self):
         self.is_1_n_RelSelected = RelStatusEnum.IN_MOTION_BEFORE_CLICK
 
+    def changeStatusToAfterClick_1_n_Rel(self):
+        self.is_1_n_RelSelected = RelStatusEnum.IN_MOTION_AFTER_CLICK
+
     def unselectCreate_1_n_Rel(self):
         self.is_1_n_RelSelected = RelStatusEnum.NOT_IN_MOTION
 
@@ -52,10 +51,13 @@ class ToolBarController:
     def selectCreate_n_n_Rel(self):
         self.is_n_n_RelSelected = RelStatusEnum.IN_MOTION_BEFORE_CLICK
 
-    def unselectCreate_n_n_RelStatus(self):
+    def changeStatusToAfterClick_n_n_Rel(self):
+        self.is_n_n_RelSelected = RelStatusEnum.IN_MOTION_AFTER_CLICK
+
+    def unselectCreate_n_n_Rel(self):
         self.is_n_n_RelSelected = RelStatusEnum.NOT_IN_MOTION
 
-    def getCreate_n_n_Rel(self):
+    def getCreate_n_n_RelStatus(self):
         return self.is_n_n_RelSelected
 
     def selectSaveDiagram(self):
