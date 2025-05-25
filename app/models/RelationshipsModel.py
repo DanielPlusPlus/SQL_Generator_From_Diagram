@@ -1,11 +1,10 @@
 from app.enums.RelationshipsEnum import RelationshipsEnum
 
 
-class RelationshipModel:
-    def __init__(self, FirstTable, SecondTable, relationshipType):
+class ConnectionModel:
+    def __init__(self, FirstTable, SecondTable):
         self.FirstTable = FirstTable
         self.SecondTable = SecondTable
-        self.relationshipType = relationshipType
 
     def getFirstTable(self):
         return self.FirstTable
@@ -13,8 +12,19 @@ class RelationshipModel:
     def getSecondTable(self):
         return self.SecondTable
 
+
+class RelationshipModel(ConnectionModel):
+    def __init__(self, FirstTable, SecondTable, relationshipType):
+        super().__init__(FirstTable, SecondTable)
+        self.relationshipType = relationshipType
+
     def getRelationshipType(self):
         return self.relationshipType
+
+
+class InheritanceModel:
+    def __init__(self, FirstTable, SecondTable):
+        super().__init__(FirstTable, SecondTable)
 
 
 class RelationshipsModel:

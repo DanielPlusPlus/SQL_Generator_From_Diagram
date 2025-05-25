@@ -22,6 +22,10 @@ class ToolBarView(QToolBar):
         self.actionCreate_n_n_Rel = QAction(QIcon("app\\icons\\n_n_rel.png"), "Create n:n relationship", self)
         self.addAction(self.actionCreate_n_n_Rel)
 
+        self.actionCreateInheritance = QAction(QIcon("app\\icons\\inheritance.png"),
+                                                  "Create inheritance relationship", self)
+        self.addAction(self.actionCreateInheritance)
+
         self.actionSaveDiagram = QAction(QIcon("app\\icons\\saveDiagram.png"), "Save diagram", self)
         self.addAction(self.actionSaveDiagram)
 

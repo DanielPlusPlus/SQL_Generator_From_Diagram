@@ -11,6 +11,7 @@ class ToolBarController:
         ToolBarView.actionCreate_1_1_Rel.triggered.connect(self.selectCreate_1_1_Rel)
         ToolBarView.actionCreate_1_n_Rel.triggered.connect(self.selectCreate_1_n_Rel)
         ToolBarView.actionCreate_n_n_Rel.triggered.connect(self.selectCreate_n_n_Rel)
+        ToolBarView.actionCreateInheritance.triggered.connect(self.selectCreateInheritance)
         ToolBarView.actionSaveDiagram.triggered.connect(self.selectSaveDiagram)
         ToolBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQL)
         # trzeba stworzyc anulowanie akcji
@@ -59,6 +60,9 @@ class ToolBarController:
 
     def getCreate_n_n_RelStatus(self):
         return self.is_n_n_RelSelected
+
+    def selectCreateInheritance(self):
+        print("aa")
 
     def selectSaveDiagram(self):
         print("Selected save diagram tool")
