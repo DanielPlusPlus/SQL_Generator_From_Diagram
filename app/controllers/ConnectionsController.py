@@ -1,6 +1,4 @@
 class ConnectionsController:
-    isConnectionBeingDrawn = False
-
     def __init__(self, TablesModel):
         self.TablesModel = TablesModel
         self.FirstClickedTable = None
@@ -19,12 +17,3 @@ class ConnectionsController:
             self.SecondClickedTable = ObtainedTable
             return True
         return False
-
-    def selectConnectionBeingDrawn(self):
-        ConnectionsController.isConnectionBeingDrawn = True
-
-    def unselectConnectionBeingDrawn(self):
-        ConnectionsController.isConnectionBeingDrawn = False
-
-    def getConnectionBeingDrawnStatus(self):
-        return ConnectionsController.isConnectionBeingDrawn

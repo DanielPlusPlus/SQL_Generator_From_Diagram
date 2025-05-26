@@ -8,6 +8,15 @@ class RelationshipsController(ConnectionsController):
         self.RelationshipsModel = RelationshipsModel
         self.isRelationshipBeingDrawn = False
 
+    def selectRelationshipBeingDrawn(self):
+        self.isRelationshipBeingDrawn = True
+
+    def unselectRelationshipBeingDrawn(self):
+        self.isRelationshipBeingDrawn = False
+
+    def getRelationshipBeingDrawnStatus(self):
+        return self.isRelationshipBeingDrawn
+
     def add_1_1_Relationship(self):
         self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable)
 

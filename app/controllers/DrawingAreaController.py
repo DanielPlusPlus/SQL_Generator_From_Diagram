@@ -40,32 +40,32 @@ class DrawingAreaController:
 
             elif self.ToolBarController.getCreate_1_1_RelStatus() is RelStatusEnum.IN_MOTION_BEFORE_CLICK:
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
-                    self.RelationshipsController.selectConnectionBeingDrawn()
+                    self.RelationshipsController.selectRelationshipBeingDrawn()
                     self.ToolBarController.changeStatusToAfterClick_1_1_Rel()
             elif self.ToolBarController.getCreate_1_1_RelStatus() is RelStatusEnum.IN_MOTION_AFTER_CLICK:
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     self.RelationshipsController.add_1_1_Relationship()
-                    self.RelationshipsController.unselectConnectionBeingDrawn()
+                    self.RelationshipsController.unselectRelationshipBeingDrawn()
                     self.ToolBarController.unselectCreate_1_1_Rel()
 
             elif self.ToolBarController.getCreate_1_n_RelStatus() is RelStatusEnum.IN_MOTION_BEFORE_CLICK:
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
-                    self.RelationshipsController.selectConnectionBeingDrawn()
+                    self.RelationshipsController.selectRelationshipBeingDrawn()
                     self.ToolBarController.changeStatusToAfterClick_1_n_Rel()
             elif self.ToolBarController.getCreate_1_n_RelStatus() is RelStatusEnum.IN_MOTION_AFTER_CLICK:
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     self.RelationshipsController.add_1_n_Relationship()
-                    self.RelationshipsController.unselectConnectionBeingDrawn()
+                    self.RelationshipsController.unselectRelationshipBeingDrawn()
                     self.ToolBarController.unselectCreate_1_n_Rel()
 
             elif self.ToolBarController.getCreate_n_n_RelStatus() is RelStatusEnum.IN_MOTION_BEFORE_CLICK:
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
-                    self.RelationshipsController.selectConnectionBeingDrawn()
+                    self.RelationshipsController.selectRelationshipBeingDrawn()
                     self.ToolBarController.changeStatusToAfterClick_n_n_Rel()
             elif self.ToolBarController.getCreate_n_n_RelStatus() is RelStatusEnum.IN_MOTION_AFTER_CLICK:
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     self.RelationshipsController.add_n_n_Relationship()
-                    self.RelationshipsController.unselectConnectionBeingDrawn()
+                    self.RelationshipsController.unselectRelationshipBeingDrawn()
                     self.ToolBarController.unselectCreate_n_n_Rel()
 
             elif self.TablesController.getTableInTransferStatus():
@@ -105,7 +105,7 @@ class DrawingAreaController:
             self.TablesController.selectDrawTempTable(self.cursorPosition)
         elif self.TablesController.getTableInTransferStatus():
             self.TablesController.updateTableInTransferPosition(self.cursorPosition)
-        elif self.RelationshipsController.getConnectionBeingDrawnStatus():
+        elif self.RelationshipsController.getRelationshipBeingDrawnStatus():
             self.RelationshipsController.selectDrawRelationshipBeingDrawn(self.cursorPosition)
         self.TablesController.selectDrawTables()
         self.RelationshipsController.selectDrawRelationships()
