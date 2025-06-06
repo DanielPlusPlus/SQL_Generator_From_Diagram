@@ -27,7 +27,6 @@ class RelationshipsView:
 
             painter.drawLine(start, end)
 
-            # Rysowanie oznaczenia relacji
             self.drawRelationshipSymbol(painter, start, end, rel.relationshipType)
 
         painter.end()

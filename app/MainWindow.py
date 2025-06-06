@@ -55,9 +55,9 @@ class MainWindow(QMainWindow):
         self.DrawingAreaController.setMainWindowController(self.MainWindowController)
         self.TablesController = TablesController(self, self.TablesView, self.TablesModel, self.RelationshipsModel,
                                                  self.InheritancesModel)
-        self.RelationshipsController = RelationshipsController(self.RelationshipsView, self.RelationshipsModel,
+        self.RelationshipsController = RelationshipsController(self, self.RelationshipsView, self.RelationshipsModel,
                                                                self.TablesModel)
-        self.InheritancesController = InheritancesController(self.InheritancesView, self.InheritancesModel,
+        self.InheritancesController = InheritancesController(self, self.InheritancesView, self.InheritancesModel,
                                                              self.TablesModel)
         self.DrawingAreaController.setToolBarController(self.ToolBarController)
         self.DrawingAreaController.setTablesController(self.TablesController)

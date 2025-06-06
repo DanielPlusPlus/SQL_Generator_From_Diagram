@@ -2,8 +2,8 @@ from app.controllers.ConnectionsController import ConnectionsController
 
 
 class RelationshipsController(ConnectionsController):
-    def __init__(self, RelationshipsView, RelationshipsModel, TablesModel):
-        super().__init__(TablesModel)
+    def __init__(self, ParentWindow, RelationshipsView, RelationshipsModel, TablesModel):
+        super().__init__(ParentWindow, TablesModel)
         self.RelationshipsView = RelationshipsView
         self.RelationshipsModel = RelationshipsModel
         self.isRelationshipBeingDrawn = False

@@ -2,8 +2,8 @@ from app.controllers.ConnectionsController import ConnectionsController
 
 
 class InheritancesController(ConnectionsController):
-    def __init__(self, InheritanceView, InheritanceModel, TablesModel):
-        super().__init__(TablesModel)
+    def __init__(self, ParentWindow, InheritanceView, InheritanceModel, TablesModel):
+        super().__init__(ParentWindow, TablesModel)
         self.InheritancesView = InheritanceView
         self.InheritancesModel = InheritanceModel
         self.isInheritanceBeingDrawn = False

@@ -2,7 +2,7 @@ from PySide6.QtCore import QCoreApplication, QMetaObject, QRect
 from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QMenuBar, QStatusBar, QWidget
 
 
-class MainWindowView(object):
+class MainWindowView:
     def setupUi(self, parentWindow):
         if not parentWindow.objectName():
             parentWindow.setObjectName(u"MainWindow")
@@ -24,8 +24,6 @@ class MainWindowView(object):
         self.statusBar = QStatusBar(parentWindow)
         parentWindow.setStatusBar(self.statusBar)
         self.retranslateUi(parentWindow)
-
-        QMetaObject.connectSlotsByName(parentWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SQL generator from diagram", None))
