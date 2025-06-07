@@ -1,3 +1,4 @@
+from app.views.ErrorDialogView import ErrorDialogView
 from app.controllers.ConnectionsController import ConnectionsController
 
 
@@ -18,18 +19,30 @@ class RelationshipsController(ConnectionsController):
         return self.isRelationshipBeingDrawn
 
     def add_1_1_Relationship(self):
-        self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.setForeignKeys()
+        if self.isFirstSelectedColumnPK and self.isSecondSelectedColumnPK:
+            self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+        else:
+            self.displayWrongRelationshipDialog()
         self.resetSelections()
 
     def add_1_n_Relationship(self):
-        self.RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.setForeignKeys()
+        if self.isFirstSelectedColumnPK and not self.isSecondSelectedColumnPK:
+            self.RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+        else:
+            self.displayWrongRelationshipDialog()
         self.resetSelections()
 
     def add_n_n_Relationship(self):
-        self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.setForeignKeys()
+        if not self.isFirstSelectedColumnPK and self.isSecondSelectedColumnPK:
+            self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+        else:
+            self.displayWrongRelationshipDialog()
         self.resetSelections()
 
     def deleteRelationshipByTable(self, ObtainedTable):
@@ -40,3 +53,9 @@ class RelationshipsController(ConnectionsController):
 
     def selectDrawRelationships(self):
         self.RelationshipsView.drawRelationships()
+
+    def displayWrongRelationshipDialog(self):
+        dialogTitle = "ERROR"
+        dialogText = "You choose the wrong type of relationship"
+        WrongRelationshipDialog = ErrorDialogView(self.ParentWindow, dialogTitle, dialogText)
+        WrongRelationshipDialog.displayDialog()

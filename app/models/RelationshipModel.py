@@ -8,3 +8,4 @@ class RelationshipModel(ConnectionModel):
 
     def getRelationshipType(self):
         return self.relationshipType
+

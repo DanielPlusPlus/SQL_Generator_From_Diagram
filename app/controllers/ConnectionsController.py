@@ -9,6 +9,8 @@ class ConnectionsController:
         self.SecondClickedTable = None
         self.FirstSelectedColumn = None
         self.SecondSelectedColumn = None
+        self.isFirstSelectedColumnPK = False
+        self.isSecondSelectedColumnPK = False
 
     def setFirstClickedTable(self, cursorPosition):
         ObtainedTable = self.TablesModel.getTableFromPosition(cursorPosition)
@@ -41,8 +43,6 @@ class ConnectionsController:
                 return False
             self.SecondSelectedColumn = SelectedColumn
 
-            self.setForeignKeys()
-
             return True
         return False
 
@@ -50,11 +50,15 @@ class ConnectionsController:
         FirstTableColumnsModel = self.FirstClickedTable.getTableColumnsModel()
         SecondTableColumnsModel = self.SecondClickedTable.getTableColumnsModel()
 
-        FirstTableColumnsModel.setForeignKey(self.FirstSelectedColumn)
-        SecondTableColumnsModel.setForeignKey(self.SecondSelectedColumn)
+        if not FirstTableColumnsModel.setForeignKeyByColumnName(self.FirstSelectedColumn):
+            self.isFirstSelectedColumnPK = True
+        if not SecondTableColumnsModel.setForeignKeyByColumnName(self.SecondSelectedColumn):
+            self.isSecondSelectedColumnPK = True
 
     def resetSelections(self):
         self.FirstClickedTable = None
         self.SecondClickedTable = None
         self.FirstSelectedColumn = None
         self.SecondSelectedColumn = None
+        self.isFirstSelectedColumnPK = False
+        self.isSecondSelectedColumnPK = False

@@ -108,11 +108,14 @@ class TableColumnsModel(QAbstractTableModel):
             del self.columns[row]
             self.endRemoveRows()
 
-    def setForeignKey(self, columnName):
+    def setForeignKeyByColumnName(self, columnName):
         for row, column in enumerate(self.columns):
             if column.get("columnName") == columnName:
-                if not column.get("pk"):
-                    column["fk"] = True
+                if column.get("pk") or column.get("unique"):
+                    return False
+                column["fk"] = True
+                return True
+            return False
 
     def getColumns(self):
         return self.columns
