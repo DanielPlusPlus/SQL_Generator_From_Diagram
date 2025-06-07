@@ -18,13 +18,19 @@ class RelationshipsController(ConnectionsController):
         return self.isRelationshipBeingDrawn
 
     def add_1_1_Relationship(self):
-        self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable)
+        self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.resetSelections()
 
     def add_1_n_Relationship(self):
-        self.RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable)
+        self.RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.resetSelections()
 
     def add_n_n_Relationship(self):
-        self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable)
+        self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+                                                     self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.resetSelections()
 
     def deleteRelationshipByTable(self, ObtainedTable):
         self.RelationshipsModel.deleteSelectedRelationship(ObtainedTable)

@@ -37,7 +37,7 @@ class TableColumnsModel(QAbstractTableModel):
             elif column == 5:
                 return Qt.Checked if self.columns[row]["pk"] else Qt.Unchecked
             elif column == 6:
-                return Qt.Unchecked
+                return Qt.Checked if self.columns[row]["fk"] else Qt.Unchecked
 
         return None
 
@@ -80,7 +80,7 @@ class TableColumnsModel(QAbstractTableModel):
             elif column == 5:
                 self.columns[row]["pk"] = (value == Qt.Checked)
             elif column == 6:
-                pass
+                self.columns[row]["fk"] = (value == Qt.Checked)
             self.dataChanged.emit(index, index, [Qt.DisplayRole, Qt.EditRole, Qt.CheckStateRole])
             return True
 
@@ -107,6 +107,12 @@ class TableColumnsModel(QAbstractTableModel):
             self.beginRemoveRows(QModelIndex(), row, row)
             del self.columns[row]
             self.endRemoveRows()
+
+    def setForeignKey(self, columnName):
+        for row, column in enumerate(self.columns):
+            if column.get("columnName") == columnName:
+                if not column.get("pk"):
+                    column["fk"] = True
 
     def getColumns(self):
         return self.columns

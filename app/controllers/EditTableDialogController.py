@@ -40,7 +40,6 @@ class EditTableDialogController:
 
     def selectEditColumn(self):
         self.isEditColumnSelected = True
-        print("Edit column")
 
     def unselectEditColumn(self):
         self.isEditColumnSelected = False

@@ -42,11 +42,7 @@ class TablesController:
             EditTableDialog = EditTableDialogView(self.ParentWindow, ObtainedTable)
             EditTableDialog.setupUi()
             EditTableDialogControl = EditTableDialogController(EditTableDialog, ObtainedTable)
-            result = EditTableDialog.displayDialog()
-            if result == QDialog.Accepted:
-                print("OK")
-            elif result == QDialog.Rejected:
-                print("Cancel")
+            EditTableDialog.displayDialog()
 
     def selectTableInTransfer(self, cursorPosition):
         self.TableInTransfer = self.TablesModel.getTableFromPosition(cursorPosition)
