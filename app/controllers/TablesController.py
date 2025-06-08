@@ -1,5 +1,3 @@
-from PySide6.QtWidgets import QDialog
-
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.TableContextMenuView import TableContextMenuView
 from app.views.EditTableDialogView import EditTableDialogView

@@ -1,3 +1,5 @@
+from PySide6.QtCore import QPoint
+
 from app.models.RelationshipModel import RelationshipModel
 from app.enums.RelationshipsEnum import RelationshipsEnum
 
@@ -35,3 +37,9 @@ class RelationshipsModel:
             relationship for relationship in self.relationships
             if relationship.getFirstTable() is not ObtainedTable and relationship.getSecondTable() is not ObtainedTable
         ]
+
+    def getRelationshipFromPosition(self, position):
+        for ObtainedRelationship in self.relationships:
+            if ObtainedRelationship.contains(QPoint(position.x(), position.y())):
+                return ObtainedRelationship
+        return None
