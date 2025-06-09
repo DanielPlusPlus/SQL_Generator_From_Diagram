@@ -1,3 +1,4 @@
+from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.ErrorDialogView import ErrorDialogView
 from app.views.RelationshipContextMenuView import RelationshipContextMenuView
 from app.controllers.ConnectionsController import ConnectionsController
@@ -53,7 +54,13 @@ class RelationshipsController(ConnectionsController):
         self.resetSelections()
 
     def deleteRelationship(self, cursorPosition):
-        print("delete")
+        ObtainedRelationship = self.RelationshipsModel.getRelationshipFromPosition(cursorPosition)
+        if ObtainedRelationship is not None:
+            dialogTitle = "WARNING"
+            dialogText = "Are you sure about deleting this relationship?"
+            ConfirmationDialog = ConfirmationDialogView(self.ParentWindow, dialogTitle, dialogText)
+            if ConfirmationDialog.displayDialog():
+                self.RelationshipsModel.deleteSelectedRelationship(ObtainedRelationship)
 
     def deleteRelationshipByTable(self, ObtainedTable):
         self.RelationshipsModel.deleteSelectedRelationship(ObtainedTable)

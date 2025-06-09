@@ -27,7 +27,7 @@ class TablesController:
         ObtainedTable = self.TablesModel.getTableFromPosition(cursorPosition)
         if ObtainedTable is not None:
             dialogTitle = "WARNING"
-            dialogText = "Are you about deleting this table?"
+            dialogText = "Are you sure about deleting this table?"
             ConfirmationDialog = ConfirmationDialogView(self.ParentWindow, dialogTitle, dialogText)
             if ConfirmationDialog.displayDialog():
                 self.TablesModel.deleteSelectedTable(ObtainedTable)
