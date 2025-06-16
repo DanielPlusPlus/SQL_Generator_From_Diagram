@@ -14,6 +14,7 @@ from app.controllers.TablesController import TablesController
 from app.controllers.RelationshipsController import RelationshipsController
 from app.controllers.InheritancesController import InheritancesController
 from app.controllers.ExportDiagramController import ExportDiagramController
+from app.controllers.GenerateSQLDialogController import GenerateSQLDialogController
 from app.models.TablesModel import TablesModel
 from app.models.RelationshipsModel import RelationshipsModel
 from app.models.InheritancesModel import InheritancesModel
@@ -35,7 +36,6 @@ class MainWindow(QMainWindow):
         self.ScrollAreaView = ScrollAreaView(self)
         self.MainWindowController = MainWindowController(self.MainWindowView)
         self.ExportDialogController = ExportDiagramController(self.ScrollAreaView)
-        self.ToolBarController = ToolBarController(self.ToolBarView, self.ExportDialogController)
         self.DrawingAreaController = DrawingAreaController()
 
         # models
@@ -44,6 +44,10 @@ class MainWindow(QMainWindow):
         self.InheritancesModel = InheritancesModel()
 
         # views
+        self.GenerateSQLDialogController = GenerateSQLDialogController(self, self.TablesModel, self.RelationshipsModel,
+                                                                       self.InheritancesModel)
+        self.ToolBarController = ToolBarController(self.ToolBarView, self.ExportDialogController,
+                                                   self.GenerateSQLDialogController)
         self.DrawingAreaView = DrawingAreaView(self.DrawingAreaController)
         self.ScrollAreaView.setupUI(self.DrawingAreaView)
         self.DrawingAreaView.setupUI()

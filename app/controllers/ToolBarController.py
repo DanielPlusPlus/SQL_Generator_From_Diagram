@@ -2,8 +2,9 @@ from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 
 
 class ToolBarController:
-    def __init__(self, ToolBarView, ExportDiagramController):
+    def __init__(self, ToolBarView, ExportDiagramController, GenerateSQLDialogController):
         self.ExportDiagramController = ExportDiagramController
+        self.GenerateSQLDialogController = GenerateSQLDialogController
         self.isTableSelected = False
         self.is_1_1_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
         self.is_1_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
@@ -79,4 +80,4 @@ class ToolBarController:
         self.ExportDiagramController.exportDiagramToPNG()
 
     def selectGenerateSQL(self):
-        pass
+        self.GenerateSQLDialogController.displayDialog()

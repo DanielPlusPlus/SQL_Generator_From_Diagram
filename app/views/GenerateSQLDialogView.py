@@ -9,11 +9,10 @@ class GenerateSQLDialogView(QDialog):
     def __init__(self, parent=None, generated_code=""):
         super().__init__(parent)
         self.generated_code = generated_code
+
+    def setupUI(self):
         self.setWindowTitle("Generated SQL Code")
         self.resize(600, 400)
-        self.setup_ui()
-
-    def setup_ui(self):
         main_layout = QVBoxLayout(self)
 
         label = QLabel("Generated SQL Code:")
@@ -43,3 +42,7 @@ class GenerateSQLDialogView(QDialog):
 
     def get_code(self) -> str:
         return self.code_editor.toPlainText()
+
+    def displayDialog(self):
+        result = self.exec()
+        return result
