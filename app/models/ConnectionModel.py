@@ -1,9 +1,9 @@
 class ConnectionModel:
-    def __init__(self, FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn):
+    def __init__(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
         self.FirstTable = FirstTable
         self.SecondTable = SecondTable
-        self.FirstSelectedColumn = FirstSelectedColumn
-        self.SecondSelectedColumn = SecondSelectedColumn
+        self.firstSelectedColumnName = firstSelectedColumnName
+        self.secondSelectedColumnName = secondSelectedColumnName
 
     def getFirstTable(self):
         return self.FirstTable
@@ -11,11 +11,11 @@ class ConnectionModel:
     def getSecondTable(self):
         return self.SecondTable
 
-    def getFirstSelectedColumn(self):
-        return self.FirstSelectedColumn
+    def getFirstSelectedColumnName(self):
+        return self.firstSelectedColumnName
 
-    def getSecondSelectedColumn(self):
-        return self.SecondSelectedColumn
+    def getSecondSelectedColumnName(self):
+        return self.secondSelectedColumnName
 
     # do poprawy
     def contains(self, point, threshold=5):

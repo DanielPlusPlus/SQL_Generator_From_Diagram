@@ -7,8 +7,8 @@ class ConnectionsController:
         self.TablesModel = TablesModel
         self.FirstClickedTable = None
         self.SecondClickedTable = None
-        self.FirstSelectedColumn = None
-        self.SecondSelectedColumn = None
+        self.firstSelectedColumnName = None
+        self.secondSelectedColumnName = None
         self.isFirstSelectedColumnPK = False
         self.isSecondSelectedColumnPK = False
 
@@ -20,11 +20,11 @@ class ConnectionsController:
             ObtainedTableColumns = ObtainedTable.getTableColumns()
 
             ColumnSelectionDialog = ColumnSelectionDialogView(self.ParentWindow, ObtainedTableColumns)
-            SelectedColumn = ColumnSelectionDialog.displayDialog()
+            selectedColumnName = ColumnSelectionDialog.displayDialog()
 
-            if SelectedColumn is None:
+            if selectedColumnName is None:
                 return False
-            self.FirstSelectedColumn = SelectedColumn
+            self.firstSelectedColumnName = selectedColumnName
 
             return True
         return False
@@ -37,11 +37,11 @@ class ConnectionsController:
             ObtainedTableColumns = ObtainedTable.getTableColumns()
 
             ColumnSelectionDialog = ColumnSelectionDialogView(self.ParentWindow, ObtainedTableColumns)
-            SelectedColumn = ColumnSelectionDialog.displayDialog()
+            selectedColumnName = ColumnSelectionDialog.displayDialog()
 
-            if SelectedColumn is None:
+            if selectedColumnName is None:
                 return False
-            self.SecondSelectedColumn = SelectedColumn
+            self.secondSelectedColumnName = selectedColumnName
 
             return True
         return False
@@ -50,15 +50,15 @@ class ConnectionsController:
         FirstTableColumnsModel = self.FirstClickedTable.getTableColumnsModel()
         SecondTableColumnsModel = self.SecondClickedTable.getTableColumnsModel()
 
-        if not FirstTableColumnsModel.setForeignKeyByColumnName(self.FirstSelectedColumn):
+        if not FirstTableColumnsModel.setForeignKeyByColumnName(self.firstSelectedColumnName):
             self.isFirstSelectedColumnPK = True
-        if not SecondTableColumnsModel.setForeignKeyByColumnName(self.SecondSelectedColumn):
+        if not SecondTableColumnsModel.setForeignKeyByColumnName(self.secondSelectedColumnName):
             self.isSecondSelectedColumnPK = True
 
     def resetSelections(self):
         self.FirstClickedTable = None
         self.SecondClickedTable = None
-        self.FirstSelectedColumn = None
-        self.SecondSelectedColumn = None
+        self.firstSelectedColumnName = None
+        self.secondSelectedColumnName = None
         self.isFirstSelectedColumnPK = False
         self.isSecondSelectedColumnPK = False

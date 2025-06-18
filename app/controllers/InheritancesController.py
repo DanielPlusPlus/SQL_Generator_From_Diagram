@@ -18,7 +18,7 @@ class InheritancesController(ConnectionsController):
         return self.isInheritanceBeingDrawn
 
     def addInheritance(self):
-        self.InheritancesModel.addInheritance(self.FirstClickedTable, self.SecondClickedTable, self.FirstSelectedColumn, self.SecondSelectedColumn)
+        self.InheritancesModel.addInheritance(self.FirstClickedTable, self.SecondClickedTable, self.firstSelectedColumnName, self.secondSelectedColumnName)
         self.resetSelections()
 
     def deleteInheritanceByTable(self, ObtainedTable):

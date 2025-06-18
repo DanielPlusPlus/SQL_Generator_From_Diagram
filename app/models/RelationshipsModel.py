@@ -8,19 +8,19 @@ class RelationshipsModel:
     def __init__(self):
         self.relationships = []
 
-    def add_1_1_Relationship(self, FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn):
-        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn,
-                                                RelationshipsEnum.REL_1_1)
+    def add_1_1_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, firstSelectedColumnName,
+                                                secondSelectedColumnName, RelationshipsEnum.REL_1_1)
         self.relationships.append(CreatedRelationship)
 
-    def add_1_n_Relationship(self, FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn):
-        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn,
-                                                RelationshipsEnum.REL_1_n)
+    def add_1_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, firstSelectedColumnName,
+                                                secondSelectedColumnName, RelationshipsEnum.REL_1_n)
         self.relationships.append(CreatedRelationship)
 
-    def add_n_n_Relationship(self, FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn):
-        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, FirstSelectedColumn, SecondSelectedColumn,
-                                                RelationshipsEnum.REL_n_n)
+    def add_n_n_Relationship(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
+        CreatedRelationship = RelationshipModel(FirstTable, SecondTable, firstSelectedColumnName,
+                                                secondSelectedColumnName, RelationshipsEnum.REL_n_n)
         self.relationships.append(CreatedRelationship)
 
     def clearRelationships(self):

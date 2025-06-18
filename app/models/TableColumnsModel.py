@@ -109,7 +109,7 @@ class TableColumnsModel(QAbstractTableModel):
             self.endRemoveRows()
 
     def setForeignKeyByColumnName(self, columnName):
-        for row, column in enumerate(self.columns):
+        for column in self.columns:
             if column.get("columnName") == columnName:
                 if column.get("pk") or column.get("unique"):
                     return False

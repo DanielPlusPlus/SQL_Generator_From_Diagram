@@ -129,7 +129,6 @@ class DrawingAreaController:
             elif (not self.TablesController.getContextMenuAtWorkStatus()
                   and not self.RelationshipsController.getContextMenuAtWorkStatus()):
                 globalCursorPosition = self.convertCursorPositionToGlobal(self.cursorPosition)
-                print(globalCursorPosition)
                 result = self.TablesController.displayTableContextMenu(self.cursorPosition,
                                                                        globalCursorPosition)
                 if result is TableContextMenuEnum.EDIT:

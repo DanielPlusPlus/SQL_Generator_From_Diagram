@@ -30,7 +30,7 @@ class RelationshipsController(ConnectionsController):
         self.setForeignKeys()
         if self.isFirstSelectedColumnPK and self.isSecondSelectedColumnPK:
             self.RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+                                                         self.firstSelectedColumnName, self.secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
         self.resetSelections()
@@ -39,7 +39,7 @@ class RelationshipsController(ConnectionsController):
         self.setForeignKeys()
         if self.isFirstSelectedColumnPK and not self.isSecondSelectedColumnPK:
             self.RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+                                                         self.firstSelectedColumnName, self.secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
         self.resetSelections()
@@ -48,7 +48,7 @@ class RelationshipsController(ConnectionsController):
         self.setForeignKeys()
         if not self.isFirstSelectedColumnPK and not self.isSecondSelectedColumnPK:
             self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
-                                                         self.FirstSelectedColumn, self.SecondSelectedColumn)
+                                                         self.firstSelectedColumnName, self.secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
         self.resetSelections()
@@ -63,7 +63,7 @@ class RelationshipsController(ConnectionsController):
                 self.RelationshipsModel.deleteSelectedRelationship(ObtainedRelationship)
 
     def deleteRelationshipByTable(self, ObtainedTable):
-        self.RelationshipsModel.deleteSelectedRelationship(ObtainedTable)
+        self.RelationshipsModel.deleteSelectedRelationshipByTable(ObtainedTable)
 
     def editRelationship(self, cursorPosition):
         print("edit")
