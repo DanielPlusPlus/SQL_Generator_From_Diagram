@@ -5,8 +5,8 @@ class InheritancesModel:
     def __init__(self):
         self.inheritances = []
 
-    def addInheritance(self, FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName):
-        CreatedInheritance = InheritanceModel(FirstTable, SecondTable, firstSelectedColumnName, secondSelectedColumnName)
+    def addInheritance(self, FirstTable, SecondTable):
+        CreatedInheritance = InheritanceModel(FirstTable, SecondTable)
         self.inheritances.append(CreatedInheritance)
 
     def clearInheritances(self):

@@ -88,10 +88,10 @@ class GenerateSQLDialogController:
             f'    CONSTRAINT pk_{junctionTableName} PRIMARY KEY ' + \
             f'("{firstTableName}_{firstSelectedColumnName}","{secondTableName}_{secondSelectedColumnName}"),\n' + \
             f'    CONSTRAINT fk_{junctionTableName}_{firstTableName} FOREIGN KEY ' + \
-            f'("{firstTableName}_{firstSelectedColumnName}") REFERENCES ' + \
+            f'"{firstTableName}_{firstSelectedColumnName}" REFERENCES ' + \
             f'"{firstTableName}"("{firstSelectedColumnName}"),\n' + \
             f'    CONSTRAINT fk_{junctionTableName}_{secondTableName} FOREIGN KEY ' + \
-            f'("{secondTableName}_{secondSelectedColumnName}") REFERENCES ' + \
+            f'"{secondTableName}_{secondSelectedColumnName}" REFERENCES ' + \
             f'"{secondTableName}"("{secondSelectedColumnName}")\n' + \
             f');'
 

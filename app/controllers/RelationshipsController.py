@@ -1,3 +1,4 @@
+from app.views.ColumnSelectionDialogView import ColumnSelectionDialogView
 from app.views.ConfirmationDialogView import ConfirmationDialogView
 from app.views.ErrorDialogView import ErrorDialogView
 from app.views.RelationshipContextMenuView import RelationshipContextMenuView
@@ -14,8 +15,50 @@ class RelationshipsController(ConnectionsController):
         self.RelationshipContextMenuView = RelationshipContextMenuView(self.ParentWindow)
         self.RelationshipContextMenuView.setup_UI()
         self.RelationContextMenuController = RelationshipContextMenuController(self.RelationshipContextMenuView)
+        self.firstSelectedColumnName = None
+        self.secondSelectedColumnName = None
+        self.isFirstSelectedColumnPK = False
+        self.isSecondSelectedColumnPK = False
         self.isRelationshipBeingDrawn = False
         self.isContextMenuAtWork = False
+
+    def setFirstSelectedColumnName(self):
+        obtainedTableColumns = self.FirstClickedTable.getTableColumns()
+
+        selectedColumnName = self.displayColumnSelectionDialog(obtainedTableColumns)
+        if selectedColumnName is None:
+            return False
+        self.firstSelectedColumnName = selectedColumnName
+        return True
+
+    def setSecondSelectedColumnName(self):
+        obtainedTableColumns = self.SecondClickedTable.getTableColumns()
+
+        selectedColumnName = self.displayColumnSelectionDialog(obtainedTableColumns)
+        if selectedColumnName is None:
+            return False
+        self.secondSelectedColumnName = selectedColumnName
+        return True
+
+    def displayColumnSelectionDialog(self, obtainedTableColumns):
+        ColumnSelectionDialog = ColumnSelectionDialogView(self.ParentWindow, obtainedTableColumns)
+        return ColumnSelectionDialog.displayDialog()
+
+    def setForeignKeys(self):
+        FirstTableColumnsModel = self.FirstClickedTable.getTableColumnsModel()
+        SecondTableColumnsModel = self.SecondClickedTable.getTableColumnsModel()
+
+        if not FirstTableColumnsModel.setForeignKeyByColumnName(self.firstSelectedColumnName):
+            self.isFirstSelectedColumnPK = True
+        if not SecondTableColumnsModel.setForeignKeyByColumnName(self.secondSelectedColumnName):
+            self.isSecondSelectedColumnPK = True
+
+    def resetSelections(self):
+        self.resetTables()
+        self.firstSelectedColumnName = None
+        self.secondSelectedColumnName = None
+        self.isFirstSelectedColumnPK = False
+        self.isSecondSelectedColumnPK = False
 
     def selectRelationshipBeingDrawn(self):
         self.isRelationshipBeingDrawn = True
