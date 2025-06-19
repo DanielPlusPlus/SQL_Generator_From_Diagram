@@ -17,16 +17,23 @@ class GenerateSQLDialogController:
 
     def generateSQLCode(self):
         sqlStatements = []
+        tablesWithTypesSet = set()
 
-        tables = self.TablesModel.getTables()
-        for ObtainedTable in tables:
-            createTableSQL = self.generateCreateTableSQLCode(ObtainedTable)
-            sqlStatements.append(createTableSQL)
+        for ObtainedInheritance in self.InheritancesModel.getInheritances():
+            inheritanceSQL = self.generateInheritanceTypeSQLCode(ObtainedInheritance)
+            sqlStatements.append(inheritanceSQL)
 
-        relationships = self.RelationshipsModel.getRelationships()
-        for ObtainedRelationship in relationships:
-            createRelationshipSQL = self.generateRelationshipSQLCode(ObtainedRelationship)
-            sqlStatements.append(createRelationshipSQL)
+            tablesWithTypesSet.add(ObtainedInheritance.getFirstTable())
+            tablesWithTypesSet.add(ObtainedInheritance.getSecondTable())
+
+        for ObtainedTable in self.TablesModel.getTables():
+            if ObtainedTable in tablesWithTypesSet:
+                sqlStatements.append(self.generateCreateTableFromTypeSQLCode(ObtainedTable))
+            else:
+                sqlStatements.append(self.generateCreateTableSQLCode(ObtainedTable))
+
+        for ObtainedRelationship in self.RelationshipsModel.getRelationships():
+            sqlStatements.append(self.generateRelationshipSQLCode(ObtainedRelationship))
 
         return '\n\n'.join(sqlStatements)
 
@@ -50,9 +57,68 @@ class GenerateSQLDialogController:
                 pkColumns.append(f'"{column["columnName"]}"')
 
         if pkColumns:
-            columnsSQL.append(f"CONSTRAINT pk_{tableName} PRIMARY KEY ({", ".join(pkColumns)})")
+            columnsSQL.append(f'CONSTRAINT "pk_{tableName}" PRIMARY KEY ({", ".join(pkColumns)})')
 
         return f'CREATE TABLE "{tableName}" (\n    ' + ',\n    '.join(columnsSQL) + '\n);'
+
+    def generateInheritanceTypeSQLCode(self, ObtainedInheritance):
+        ChildTable = ObtainedInheritance.getFirstTable()
+        ParentTable = ObtainedInheritance.getSecondTable()
+
+        childTableName = ChildTable.getTableName()
+        parentTableName = ParentTable.getTableName()
+
+        parentColumns = ParentTable.getTableColumns()
+        childColumns = ChildTable.getTableColumns()
+
+        parentColumnsNames = {column["columnName"] for column in parentColumns}
+        childOnlyColumns = [column for column in childColumns if column["columnName"] not in parentColumnsNames]
+
+        parentTypeSQL = (
+                f'CREATE OR REPLACE TYPE "{parentTableName}_T" AS OBJECT (\n    ' +
+                ',\n    '.join(self.generateObjectColumns(parentColumns)) +
+                '\n) NOT FINAL;'
+        )
+
+        childTypeSQL = (
+                f'CREATE OR REPLACE TYPE "{childTableName}_T" UNDER "{parentTableName}_T" (\n    ' +
+                ',\n    '.join(self.generateObjectColumns(childOnlyColumns)) +
+                '\n);'
+        )
+
+        return parentTypeSQL + '\n\n' + childTypeSQL
+
+    def generateCreateTableFromTypeSQLCode(self, ObtainedTable):
+        tableName = ObtainedTable.getTableName()
+        typeName = f'{tableName}_T'
+        columnsConstraintsSQL = []
+        pkColumns = []
+
+        for column in ObtainedTable.getTableColumns():
+            colName = column["columnName"]
+            if column["pk"]:
+                pkColumns.append(f'"{colName}"')
+            if column["notNull"]:
+                columnsConstraintsSQL.append(f'"{colName}" NOT NULL')
+            if column["unique"]:
+                columnsConstraintsSQL.append(f'UNIQUE ("{colName}")')
+
+        if pkColumns:
+            columnsConstraintsSQL.append(f'CONSTRAINT "pk_{tableName}" PRIMARY KEY ({", ".join(pkColumns)})')
+
+        createTableSQL = f'CREATE TABLE "{tableName}" OF "{typeName}"'
+        if columnsConstraintsSQL:
+            createTableSQL += ' (\n    ' + ',\n    '.join(columnsConstraintsSQL) + '\n)'
+        return createTableSQL + ';'
+
+    def generateObjectColumns(self, obtainedColumns):
+        columnsSQL = []
+        for column in obtainedColumns:
+            columnSQL = f'"{column["columnName"]}" {column["dataType"]}'
+            if column["length"]:
+                columnSQL += f'({column["length"]})'
+            columnsSQL.append(columnSQL)
+        return columnsSQL
 
     def generateRelationshipSQLCode(self, ObtainedRelationship):
         relationshipType = ObtainedRelationship.getRelationshipType()
@@ -65,11 +131,11 @@ class GenerateSQLDialogController:
             firstSelectedColumnName = ObtainedRelationship.getFirstSelectedColumnName()
             secondSelectedColumnName = ObtainedRelationship.getSecondSelectedColumnName()
 
-            alterTableSQL = (
-                f'ALTER TABLE "{secondTableName}" '
-                f'ADD CONSTRAINT fk_{secondTableName}_{secondSelectedColumnName} FOREIGN KEY ("{secondSelectedColumnName}") '
+            alterTableSQL = \
+                f'ALTER TABLE "{secondTableName}" ' + \
+                f'ADD CONSTRAINT "fk_{secondTableName}_{secondSelectedColumnName}" ' + \
+                f'FOREIGN KEY ("{secondSelectedColumnName}")' + \
                 f'REFERENCES "{firstTableName}"("{firstSelectedColumnName}");'
-            )
             return alterTableSQL
 
     def generateCreateJunctionTableSQLCode(self, ObtainedRelationship):
@@ -83,17 +149,16 @@ class GenerateSQLDialogController:
 
         createJunctionTableSQL = \
             f'CREATE TABLE "{junctionTableName}" (\n' + \
-            f'    "{firstTableName}_{firstSelectedColumnName}" INTEGER NOT NULL,\n' + \
-            f'    "{secondTableName}_{secondSelectedColumnName}" INTEGER NOT NULL,\n' + \
-            f'    CONSTRAINT pk_{junctionTableName} PRIMARY KEY ' + \
+            f'    "{firstTableName}_{firstSelectedColumnName}" NUMBER NOT NULL,\n' + \
+            f'    "{secondTableName}_{secondSelectedColumnName}" NUMBER NOT NULL,\n' + \
+            f'    CONSTRAINT "pk_{junctionTableName}" PRIMARY KEY ' + \
             f'("{firstTableName}_{firstSelectedColumnName}","{secondTableName}_{secondSelectedColumnName}"),\n' + \
-            f'    CONSTRAINT fk_{junctionTableName}_{firstTableName} FOREIGN KEY ' + \
-            f'"{firstTableName}_{firstSelectedColumnName}" REFERENCES ' + \
+            f'    CONSTRAINT "fk_{junctionTableName}_{firstTableName}" FOREIGN KEY ' + \
+            f'("{firstTableName}_{firstSelectedColumnName}") REFERENCES ' + \
             f'"{firstTableName}"("{firstSelectedColumnName}"),\n' + \
-            f'    CONSTRAINT fk_{junctionTableName}_{secondTableName} FOREIGN KEY ' + \
-            f'"{secondTableName}_{secondSelectedColumnName}" REFERENCES ' + \
+            f'    CONSTRAINT "fk_{junctionTableName}_{secondTableName}" FOREIGN KEY ' + \
+            f'("{secondTableName}_{secondSelectedColumnName}") REFERENCES ' + \
             f'"{secondTableName}"("{secondSelectedColumnName}")\n' + \
             f');'
 
         return createJunctionTableSQL
-
