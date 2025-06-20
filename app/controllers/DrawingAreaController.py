@@ -47,55 +47,55 @@ class DrawingAreaController:
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setFirstSelectedColumnName():
-                        self.RelationshipsController.selectRelationshipBeingDrawn()
                         self.ToolBarController.changeStatusToAfterClick_1_1_RelTool()
+                        self.RelationshipsController.selectRelationshipBeingDrawn()
             elif (self.ToolBarController.getCreate_1_1_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setSecondSelectedColumnName():
                         self.RelationshipsController.add_1_1_Relationship()
-                        self.RelationshipsController.unselectRelationshipBeingDrawn()
                         self.ToolBarController.unselectCreate_1_1_RelTool()
+                        self.RelationshipsController.unselectRelationshipBeingDrawn()
 
             elif (self.ToolBarController.getCreate_1_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setFirstSelectedColumnName():
-                        self.RelationshipsController.selectRelationshipBeingDrawn()
                         self.ToolBarController.changeStatusToAfterClick_1_n_RelTool()
+                        self.RelationshipsController.selectRelationshipBeingDrawn()
             elif (self.ToolBarController.getCreate_1_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setSecondSelectedColumnName():
                         self.RelationshipsController.add_1_n_Relationship()
-                        self.RelationshipsController.unselectRelationshipBeingDrawn()
                         self.ToolBarController.unselectCreate_1_n_RelTool()
+                        self.RelationshipsController.unselectRelationshipBeingDrawn()
 
             elif (self.ToolBarController.getCreate_n_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.RelationshipsController.setFirstClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setFirstSelectedColumnName():
-                        self.RelationshipsController.selectRelationshipBeingDrawn()
                         self.ToolBarController.changeStatusToAfterClick_n_n_RelTool()
+                        self.RelationshipsController.selectRelationshipBeingDrawn()
             elif (self.ToolBarController.getCreate_n_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.RelationshipsController.setSecondClickedTable(self.cursorPosition):
                     if self.RelationshipsController.setSecondSelectedColumnName():
                         self.RelationshipsController.add_n_n_Relationship()
-                        self.RelationshipsController.unselectRelationshipBeingDrawn()
                         self.ToolBarController.unselectCreate_n_n_RelTool()
+                        self.RelationshipsController.unselectRelationshipBeingDrawn()
 
             elif (self.ToolBarController.getCreateInheritanceToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.InheritancesController.setFirstClickedTable(self.cursorPosition):
-                    self.InheritancesController.selectInheritanceBeingDrawn()
                     self.ToolBarController.changeStatusToAfterClickInheritanceTool()
+                    self.InheritancesController.selectInheritanceBeingDrawn()
             elif (self.ToolBarController.getCreateInheritanceToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.InheritancesController.setSecondClickedTable(self.cursorPosition):
                     self.InheritancesController.addInheritance()
-                    self.InheritancesController.unselectInheritanceBeingDrawn()
                     self.ToolBarController.unselectCreateInheritanceTool()
+                    self.InheritancesController.unselectInheritanceBeingDrawn()
 
             elif self.TablesController.getTableInTransferStatus():
                 self.TablesController.unselectTableInTransfer(self.cursorPosition)
@@ -123,7 +123,7 @@ class DrawingAreaController:
                 self.ToolBarController.unselectCreate_n_n_RelTool()
             elif (self.ToolBarController.getCreateInheritanceToolStatus()
                   is not ConnectionsStatusEnum.NOT_IN_MOTION):
-                self.RelationshipsController.unselectRelationshipBeingDrawn()
+                self.InheritancesController.unselectInheritanceBeingDrawn()
                 self.ToolBarController.unselectCreateInheritanceTool()
 
             elif self.TablesController.getTableInTransferStatus():
@@ -164,3 +164,10 @@ class DrawingAreaController:
 
     def convertCursorPositionToGlobal(self, cursorPosition):
         return self.DrawingAreaView.mapToGlobal(cursorPosition)
+
+    def updateView(self):
+        self.DrawingAreaView.update()
+
+    def unselectConnectionsBeingDrawn(self):
+        self.RelationshipsController.unselectRelationshipBeingDrawn()
+        self.InheritancesController.unselectInheritanceBeingDrawn()

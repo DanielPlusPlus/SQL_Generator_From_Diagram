@@ -2,7 +2,8 @@ from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 
 
 class ToolBarController:
-    def __init__(self, ToolBarView, ExportDiagramController, GenerateSQLDialogController):
+    def __init__(self, ToolBarView, DrawingAreaController, ExportDiagramController, GenerateSQLDialogController):
+        self.DrawingAreaController = DrawingAreaController
         self.ExportDiagramController = ExportDiagramController
         self.GenerateSQLDialogController = GenerateSQLDialogController
         self.isTableSelected = False
@@ -15,11 +16,14 @@ class ToolBarController:
         ToolBarView.actionCreate_1_n_Rel.triggered.connect(self.selectCreate_1_n_RelTool)
         ToolBarView.actionCreate_n_n_Rel.triggered.connect(self.selectCreate_n_n_RelTool)
         ToolBarView.actionCreateInheritance.triggered.connect(self.selectCreateInheritanceTool)
-        ToolBarView.actionSaveDiagram.triggered.connect(self.selectSaveDiagram)
-        ToolBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQL)
+        ToolBarView.actionSaveDiagram.triggered.connect(self.selectSaveDiagramTool)
+        ToolBarView.actionGenerateSQL.triggered.connect(self.selectGenerateSQLTool)
         # trzeba stworzyc anulowanie akcji
 
     def selectCreateTableTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.isTableSelected = True
 
     def unselectCreateTableTool(self):
@@ -29,6 +33,9 @@ class ToolBarController:
         return self.isTableSelected
 
     def selectCreate_1_1_RelTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.is_1_1_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_1_1_RelTool(self):
@@ -41,6 +48,9 @@ class ToolBarController:
         return self.is_1_1_RelSelected
 
     def selectCreate_1_n_RelTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.is_1_n_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_1_n_RelTool(self):
@@ -53,6 +63,9 @@ class ToolBarController:
         return self.is_1_n_RelSelected
 
     def selectCreate_n_n_RelTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.is_n_n_RelSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClick_n_n_RelTool(self):
@@ -65,6 +78,9 @@ class ToolBarController:
         return self.is_n_n_RelSelected
 
     def selectCreateInheritanceTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.isInheritanceSelected = ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK
 
     def changeStatusToAfterClickInheritanceTool(self):
@@ -76,8 +92,22 @@ class ToolBarController:
     def getCreateInheritanceToolStatus(self):
         return self.isInheritanceSelected
 
-    def selectSaveDiagram(self):
+    def selectSaveDiagramTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.ExportDiagramController.exportDiagramToPNG()
 
-    def selectGenerateSQL(self):
+    def selectGenerateSQLTool(self):
+        self.unselectAllTools()
+        self.DrawingAreaController.unselectConnectionsBeingDrawn()
+        self.DrawingAreaController.updateView()
         self.GenerateSQLDialogController.displayDialog()
+
+    def unselectAllTools(self):
+        self.isTableSelected = False
+        self.is_1_1_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
+        self.is_1_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
+        self.is_n_n_RelSelected = ConnectionsStatusEnum.NOT_IN_MOTION
+        self.isInheritanceSelected = ConnectionsStatusEnum.NOT_IN_MOTION
+

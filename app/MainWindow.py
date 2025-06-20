@@ -46,8 +46,8 @@ class MainWindow(QMainWindow):
         # views
         self.GenerateSQLDialogController = GenerateSQLDialogController(self, self.TablesModel, self.RelationshipsModel,
                                                                        self.InheritancesModel)
-        self.ToolBarController = ToolBarController(self.ToolBarView, self.ExportDialogController,
-                                                   self.GenerateSQLDialogController)
+        self.ToolBarController = ToolBarController(self.ToolBarView, self.DrawingAreaController,
+                                                   self.ExportDialogController, self.GenerateSQLDialogController)
         self.DrawingAreaView = DrawingAreaView(self.DrawingAreaController)
         self.ScrollAreaView.setupUI(self.DrawingAreaView)
         self.DrawingAreaView.setupUI()
