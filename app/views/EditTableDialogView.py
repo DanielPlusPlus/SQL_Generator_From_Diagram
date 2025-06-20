@@ -112,7 +112,6 @@ class EditTableDialogView(QDialog):
         self.horizontalLayout_9.setStretch(0, 1)
         self.horizontalLayout_9.setStretch(1, 1)
         self.horizontalLayout_9.setStretch(2, 1)
-
         self.gridLayout.addLayout(self.horizontalLayout_9, 4, 0, 1, 3)
 
         self.gridLayout.setRowStretch(0, 1)

@@ -4,16 +4,17 @@ from app.enums.RelationshipsEnum import RelationshipsEnum
 
 class GenerateSQLDialogController:
     def __init__(self, ParentWindow, TablesModel, RelationshipsModel, InheritancesModel):
+        self.ParentWindow = ParentWindow
         self.TablesModel = TablesModel
         self.RelationshipsModel = RelationshipsModel
         self.InheritancesModel = InheritancesModel
-        self.GenerateSQLDialogView = GenerateSQLDialogView(ParentWindow)
 
     def displayDialog(self):
         sqlCode = self.generateSQLCode()
         print(sqlCode)
-        self.GenerateSQLDialogView.setupUI()
-        self.GenerateSQLDialogView.displayDialog()
+        GenerateSQLDialog = GenerateSQLDialogView(self.ParentWindow)
+        GenerateSQLDialog.setupUI()
+        GenerateSQLDialog.displayDialog()
 
     def generateSQLCode(self):
         sqlStatements = []
