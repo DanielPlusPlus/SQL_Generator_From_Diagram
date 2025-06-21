@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt, QPoint
 from app.enums.ConnectionsStatusEnum import ConnectionsStatusEnum
 from app.enums.TableContextMenuEnum import TableContextMenuEnum
 from app.enums.RelationshipContextMenuEnum import RelationshipContextMenuEnum
+from app.enums.InheritanceContextMenuEnum import InheritanceContextMenuEnum
 
 
 class DrawingAreaController:
@@ -133,7 +134,8 @@ class DrawingAreaController:
             elif self.RelationshipsController.getContextMenuAtWorkStatus():
                 self.RelationshipsController.unselectContextMenuAtWork()
             elif (not self.TablesController.getContextMenuAtWorkStatus()
-                  and not self.RelationshipsController.getContextMenuAtWorkStatus()):
+                  and not self.RelationshipsController.getContextMenuAtWorkStatus()
+                  and not self.InheritancesController.getContextMenuAtWorkStatus()):
                 globalCursorPosition = self.convertCursorPositionToGlobal(self.cursorPosition)
                 result = self.TablesController.displayTableContextMenu(self.cursorPosition,
                                                                        globalCursorPosition)
@@ -141,13 +143,20 @@ class DrawingAreaController:
                     self.TablesController.editTable(self.cursorPosition)
                 elif result is TableContextMenuEnum.DELETE:
                     self.TablesController.deleteTable(self.cursorPosition)
+                else:
+                    result = self.RelationshipsController.displayRelationshipContextMenu(self.cursorPosition,
+                                                                                         globalCursorPosition)
+                    if result is RelationshipContextMenuEnum.EDIT:
+                        self.RelationshipsController.editRelationship(self.cursorPosition)
+                    elif result is RelationshipContextMenuEnum.DELETE:
+                        self.RelationshipsController.deleteRelationship(self.cursorPosition)
 
-                result = self.RelationshipsController.displayRelationshipContextMenu(self.cursorPosition,
-                                                                                     globalCursorPosition)
-                if result is RelationshipContextMenuEnum.EDIT:
-                    self.RelationshipsController.editRelationship(self.cursorPosition)
-                elif result is RelationshipContextMenuEnum.DELETE:
-                    self.RelationshipsController.deleteRelationship(self.cursorPosition)
+                    result = self.InheritancesController.displayInheritanceContextMenu(self.cursorPosition,
+                                                                                       globalCursorPosition)
+                    if result is InheritanceContextMenuEnum.EDIT:
+                        self.InheritancesController.editInheritance(self.cursorPosition)
+                    elif result is InheritanceContextMenuEnum.DELETE:
+                        self.InheritancesController.deleteInheritance(self.cursorPosition)
 
     def handlePaintEvent(self):
         if self.ToolBarController.getCreateTableToolStatus():

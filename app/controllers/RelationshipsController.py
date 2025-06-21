@@ -13,8 +13,8 @@ class RelationshipsController(ConnectionsController):
         self.RelationshipsView = RelationshipsView
         self.RelationshipsModel = RelationshipsModel
         self.RelationshipContextMenuView = RelationshipContextMenuView(self.ParentWindow)
-        self.RelationshipContextMenuView.setup_UI()
-        self.RelationContextMenuController = RelationshipContextMenuController(self.RelationshipContextMenuView)
+        self.RelationshipContextMenuView.setupUI()
+        self.RelationshipContextMenuController = RelationshipContextMenuController(self.RelationshipContextMenuView)
         self.firstSelectedColumnName = None
         self.secondSelectedColumnName = None
         self.isFirstSelectedColumnPK = False
@@ -128,12 +128,12 @@ class RelationshipsController(ConnectionsController):
         if ObtainedRelationship is not None:
             self.isContextMenuAtWork = True
             self.RelationshipContextMenuView.exec(globalCursorPosition)
-            if self.RelationContextMenuController.getSelectEditRelationshipStatus():
-                self.RelationContextMenuController.unselectEditRelationship()
+            if self.RelationshipContextMenuController.getSelectEditRelationshipStatus():
+                self.RelationshipContextMenuController.unselectEditRelationship()
                 self.isContextMenuAtWork = False
                 return RelationshipContextMenuEnum.EDIT
-            elif self.RelationContextMenuController.getSelectDeleteRelationshipStatus():
-                self.RelationContextMenuController.unselectDeleteRelationship()
+            elif self.RelationshipContextMenuController.getSelectDeleteRelationshipStatus():
+                self.RelationshipContextMenuController.unselectDeleteRelationship()
                 self.isContextMenuAtWork = False
                 return RelationshipContextMenuEnum.DELETE
             return RelationshipContextMenuEnum.NONE

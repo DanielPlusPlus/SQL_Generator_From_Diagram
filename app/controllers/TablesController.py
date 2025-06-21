@@ -14,7 +14,7 @@ class TablesController:
         self.RelationshipsController = RelationshipsController
         self.InheritancesController = InheritancesController
         self.TableContextMenuView = TableContextMenuView(self.ParentWindow)
-        self.TableContextMenuView.setup_UI()
+        self.TableContextMenuView.setupUI()
         self.TableContextMenuController = TableContextMenuController(self.TableContextMenuView)
         self.TableInTransfer = None
         self.isTableInTransfer = False

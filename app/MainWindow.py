@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
 
         # views
         self.GenerateSQLController = GenerateSQLController(self, self.TablesModel, self.RelationshipsModel,
-                                                                       self.InheritancesModel)
+                                                           self.InheritancesModel)
         self.ToolBarController = ToolBarController(self.ToolBarView, self.DrawingAreaController,
                                                    self.ExportDialogController, self.GenerateSQLController)
         self.DrawingAreaView = DrawingAreaView(self.DrawingAreaController)
