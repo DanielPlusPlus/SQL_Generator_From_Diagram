@@ -2,9 +2,13 @@ from PySide6.QtWidgets import QFileDialog
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtCore import QPoint
 
+from app.views.InfoDialogView import InfoDialogView
+from app.views.ErrorDialogView import ErrorDialogView
+
 
 class ExportDiagramController:
-    def __init__(self, ScrollAreaView):
+    def __init__(self, ParentWindow, ScrollAreaView):
+        self.ParentWindow = ParentWindow
         self.ScrollAreaView = ScrollAreaView
 
     def exportDiagramToPNG(self):
@@ -30,5 +34,19 @@ class ExportDiagramController:
             print("Save canceled")
             return
 
-        pixmap.save(filePath, "PNG")
-        print(f"Diagram saved to: {filePath}")
+        try:
+            if pixmap.save(filePath, "PNG"):
+                dialogTitle = "EXPORT"
+                dialogText = "Diagram has been successfully saved to a file"
+                InfoDialog = InfoDialogView(self.ParentWindow, dialogTitle, dialogText)
+                InfoDialog.displayDialog()
+            else:
+                dialogTitle = "ERROR"
+                dialogText = f"Failed to save file"
+                ErrorDialog = ErrorDialogView(self.ParentWindow, dialogTitle, dialogText)
+                ErrorDialog.displayDialog()
+        except Exception as e:
+            dialogTitle = "ERROR"
+            dialogText = f"Failed to save file:\n{str(e)}"
+            ErrorDialog = ErrorDialogView(self.ParentWindow, dialogTitle, dialogText)
+            ErrorDialog.displayDialog()
