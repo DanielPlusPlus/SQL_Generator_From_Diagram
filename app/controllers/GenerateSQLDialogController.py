@@ -3,6 +3,9 @@ from PySide6.QtWidgets import QFileDialog
 
 from app.views.InfoDialogView import InfoDialogView
 from app.views.ErrorDialogView import ErrorDialogView
+from app.views.ExecutionSQLDialogView import ExecutionSQLDialogView
+from app.controllers.OracleDatabaseController import OracleDatabaseController
+from app.controllers.ExecutionSQLDialogController import ExecutionDialogController
 
 
 class GenerateSQLDialogController:
@@ -21,7 +24,7 @@ class GenerateSQLDialogController:
         sqlCode = self.GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
 
         clipboard.setText(sqlCode)
-        
+
         dialogTitle = "INFORMATION"
         dialogText = "Entire SQL code has been copied to clipboard"
         InfoDialog = InfoDialogView(self.ParentWindow, dialogTitle, dialogText)
@@ -49,7 +52,22 @@ class GenerateSQLDialogController:
                 ErrorDialog.displayDialog()
 
     def selectTestCode(self):
-        print("test")
+        sqlCode = self.GenerateSQLDialogView.SQLCodeTextEdit.toPlainText()
+
+        if not sqlCode.strip():
+            dialogTitle = "ERROR"
+            dialogText = "SQL code is empty"
+            ErrorDialog = ErrorDialogView(self.ParentWindow, dialogTitle, dialogText)
+            ErrorDialog.displayDialog()
+            return
+
+        OracleDatabaseControl = OracleDatabaseController()
+        executionResult = OracleDatabaseControl.executeSQLCode(sqlCode)
+
+        executionSQLDialog = ExecutionSQLDialogView(self.ParentWindow)
+        executionSQLDialog.setupUI(executionResult)
+        executionSQLControl = ExecutionDialogController(executionSQLDialog)
+        executionSQLDialog.displayDialog()
 
     def selectCancel(self):
         self.GenerateSQLDialogView.reject()

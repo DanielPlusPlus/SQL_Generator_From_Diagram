@@ -29,9 +29,9 @@ class GenerateSQLDialogView(QDialog):
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
 
         self.horizontalLayout_3 = QHBoxLayout()
-        self.copyCodeButton = QPushButton(u"Copy the code", self)
-        self.saveCodeButton = QPushButton(u"Save the code", self)
-        self.testCodeButton = QPushButton(u"Test the code in Oracle", self)
+        self.copyCodeButton = QPushButton(u"Copy The Code", self)
+        self.saveCodeButton = QPushButton(u"Save The Code", self)
+        self.testCodeButton = QPushButton(u"Test The Code In Oracle", self)
         self.horizontalLayout_3.addWidget(self.copyCodeButton)
         self.horizontalLayout_3.addWidget(self.saveCodeButton)
         self.horizontalLayout_3.addWidget(self.testCodeButton)
