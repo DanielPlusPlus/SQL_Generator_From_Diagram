@@ -34,7 +34,7 @@ class OracleDatabaseController:
             messages.append(f"Connection or general error:\n{str(e)}")
 
         finally:
-            if "connection" in locals():
+            if connection is not None:
                 connection.close()
                 messages.append("Connection closed.")
 
