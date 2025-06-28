@@ -115,7 +115,7 @@ class TableColumnsModel(QAbstractTableModel):
                     return False
                 column["fk"] = True
                 return True
-            return False
+        return False
 
     def getColumns(self):
         return self.columns

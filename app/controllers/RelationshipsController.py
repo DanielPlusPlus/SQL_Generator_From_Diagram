@@ -89,7 +89,7 @@ class RelationshipsController(ConnectionsController):
 
     def add_n_n_Relationship(self):
         self.setForeignKeys()
-        if not self.isFirstSelectedColumnPK and not self.isSecondSelectedColumnPK:
+        if self.isFirstSelectedColumnPK and self.isSecondSelectedColumnPK:
             self.RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
                                                          self.firstSelectedColumnName, self.secondSelectedColumnName)
         else:
