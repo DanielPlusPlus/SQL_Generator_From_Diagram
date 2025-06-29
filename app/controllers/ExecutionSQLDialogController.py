@@ -1,4 +1,4 @@
-class ExecutionDialogController:
+class ExecutionSQLDialogController:
     def __init__(self, ExecutionSQLDialogView):
         self.ExecutionSQLDialogView = ExecutionSQLDialogView
 

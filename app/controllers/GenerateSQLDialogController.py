@@ -5,7 +5,7 @@ from app.views.InfoDialogView import InfoDialogView
 from app.views.ErrorDialogView import ErrorDialogView
 from app.views.ExecutionSQLDialogView import ExecutionSQLDialogView
 from app.controllers.OracleDatabaseController import OracleDatabaseController
-from app.controllers.ExecutionSQLDialogController import ExecutionDialogController
+from app.controllers.ExecutionSQLDialogController import ExecutionSQLDialogController
 
 
 class GenerateSQLDialogController:
@@ -66,7 +66,7 @@ class GenerateSQLDialogController:
 
         executionSQLDialog = ExecutionSQLDialogView(self.ParentWindow)
         executionSQLDialog.setupUI(executionResult)
-        executionSQLControl = ExecutionDialogController(executionSQLDialog)
+        executionSQLControl = ExecutionSQLDialogController(executionSQLDialog)
         executionSQLDialog.displayDialog()
 
     def selectCancel(self):
