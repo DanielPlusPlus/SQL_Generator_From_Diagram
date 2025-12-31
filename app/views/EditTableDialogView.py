@@ -87,7 +87,7 @@ class EditTableDialogView(QDialog):
         self.__horizontalLayout_8 = QHBoxLayout()
         self.addColumnButton = QPushButton(u"Add Column", self)
         self.deleteColumnButton = QPushButton(u"Delete Selected Column", self)
-        self.editColumnButton = QPushButton(u"Edit Selected Column", self)
+        self.editColumnButton = QPushButton(u"Enable Editing Mode", self)
         self.__horizontalLayout_8.addWidget(self.addColumnButton)
         self.__horizontalLayout_8.addWidget(self.deleteColumnButton)
         self.__horizontalLayout_8.addWidget(self.editColumnButton)

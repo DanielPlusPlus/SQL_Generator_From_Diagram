@@ -45,8 +45,10 @@ class EditTableDialogController:
             self.__EditTableDialogView.tableView.setEditTriggers(
                 QTableView.EditTrigger.DoubleClicked | QTableView.EditTrigger.SelectedClicked
             )
+            self.__EditTableDialogView.editColumnButton.setText(u"Disable Editing Mode")
         else:
             self.__EditTableDialogView.tableView.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
+            self.__EditTableDialogView.editColumnButton.setText(u"Enable Editing Mode")
 
     def __selectCancel(self):
         self.__EditTableDialogView.reject()
