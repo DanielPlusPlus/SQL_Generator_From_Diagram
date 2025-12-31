@@ -14,7 +14,7 @@ class EditTableDialogView(QDialog):
     def setupUi(self):
         if not self.objectName():
             self.setObjectName(u"EditTableDialog")
-        self.resize(600, 400)
+        self.resize(660, 400)
         self.setWindowTitle(u"Edit Table")
 
         self.__gridLayout = QGridLayout(self)
@@ -73,6 +73,7 @@ class EditTableDialogView(QDialog):
         self.tableView.setFrameShape(QFrame.Shape.StyledPanel)
         self.tableView.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
         self.tableView.setSelectionMode(QTableView.SelectionMode.SingleSelection)
+        self.tableView.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
         self.tableView.setModel(self.__ObtainedTable.getTableColumnsModel())
         dataTypesComboDelegate = ComboBoxDelegate(self.__dataTypes, self.tableView)
         self.tableView.setItemDelegateForColumn(1, dataTypesComboDelegate)

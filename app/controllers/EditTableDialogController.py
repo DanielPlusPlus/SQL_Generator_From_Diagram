@@ -1,6 +1,7 @@
-from app.models.TableColumnsModel import TableColumnsModel
-
+from PySide6.QtWidgets import QTableView
 from copy import deepcopy
+
+from app.models.TableColumnsModel import TableColumnsModel
 
 
 class EditTableDialogController:
@@ -13,12 +14,11 @@ class EditTableDialogController:
         copiedColumns = deepcopy(originalColumns)
 
         self.__TempTableColumnsModel = TableColumnsModel(copiedColumns)
-        self.__isEditColumnSelected = False
         self.__EditTableDialogView.tableView.setModel(self.__TempTableColumnsModel)
 
         self.__EditTableDialogView.addColumnButton.clicked.connect(self.__selectAddColumn)
         self.__EditTableDialogView.deleteColumnButton.clicked.connect(self.__selectDeleteColumn)
-        self.__EditTableDialogView.editColumnButton.clicked.connect(self.__selectEditColumn)
+        self.__EditTableDialogView.editColumnButton.clicked.connect(self.__toggleEditColumns)
         self.__EditTableDialogView.cancelButton.clicked.connect(self.__selectCancel)
         self.__EditTableDialogView.okButton.clicked.connect(self.__selectOK)
 
@@ -39,14 +39,14 @@ class EditTableDialogController:
             selectedRowNumber = selectedRows[0].row()
             self.__TempTableColumnsModel.deleteColumn(selectedRowNumber)
 
-    def __selectEditColumn(self):  # deprecated
-        self.__isEditColumnSelected = True
-
-    def __unselectEditColumn(self):  # deprecated
-        self.__isEditColumnSelected = False
-
-    def __getSelectEditColumnStatus(self):  # deprecated
-        return self.__isEditColumnSelected
+    def __toggleEditColumns(self):
+        self.__TempTableColumnsModel.toggleEditColumns()
+        if self.__TempTableColumnsModel.getEditColumnsStatus():
+            self.__EditTableDialogView.tableView.setEditTriggers(
+                QTableView.EditTrigger.DoubleClicked | QTableView.EditTrigger.SelectedClicked
+            )
+        else:
+            self.__EditTableDialogView.tableView.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
 
     def __selectCancel(self):
         self.__EditTableDialogView.reject()

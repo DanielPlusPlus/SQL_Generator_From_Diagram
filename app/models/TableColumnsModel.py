@@ -6,6 +6,7 @@ class TableColumnsModel(QAbstractTableModel):
     def __init__(self, columns=None):
         super().__init__()
         self.__columns = columns or []
+        self.isEditColumnsSelected = False
 
     @override
     def rowCount(self, parent=QModelIndex()):
@@ -50,14 +51,16 @@ class TableColumnsModel(QAbstractTableModel):
         if not index.isValid():
             return Qt.NoItemFlags
 
-        if index.column() in (0, 1, 2):
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
-        if index.column() in (3, 4, 5):
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsUserCheckable
-        if index.column() == 6:
-            return Qt.ItemIsSelectable | Qt.ItemIsEnabled
-
-        return Qt.ItemIsSelectable | Qt.ItemIsEnabled
+        baseFlags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
+        if self.isEditColumnsSelected:
+            if index.column() in (0, 1, 2):
+                return baseFlags | Qt.ItemIsEditable
+            if index.column() in (3, 4, 5):
+                return baseFlags | Qt.ItemIsUserCheckable
+            if index.column() == 6:
+                return baseFlags
+        else:
+            return baseFlags
 
     @override
     def setData(self, index, value, role=Qt.EditRole):
@@ -103,6 +106,11 @@ class TableColumnsModel(QAbstractTableModel):
 
         return None
 
+    def __emitAllDataChanges(self):
+        topLeft = self.index(0, 0)
+        bottomRight = self.index(self.rowCount() - 1, self.columnCount() - 1)
+        self.dataChanged.emit(topLeft, bottomRight, [Qt.DisplayRole, Qt.EditRole, Qt.CheckStateRole])
+
     def addColumn(self, dataType, length, columnName="Empty Name"):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self.__columns.append({"columnName": columnName, "dataType": dataType, "length": length, "unique": False,
@@ -124,5 +132,14 @@ class TableColumnsModel(QAbstractTableModel):
                 return True
         return False
 
+    def toggleEditColumns(self):
+        self.isEditColumnsSelected = not self.isEditColumnsSelected
+        self.__emitAllDataChanges()
+
     def getColumns(self):
         return self.__columns
+
+    def getEditColumnsStatus(self):
+        return self.isEditColumnsSelected
+
+
