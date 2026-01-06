@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (QComboBox, QDialog, QFrame, QGridLayout, QHBoxLay
                                QPushButton, QSpinBox, QTableView, QWidget, QHeaderView)
 
 from app.views.delegates.ComboBoxDelegate import ComboBoxDelegate
+from app.views.delegates.SpinBoxDelegate import SpinBoxDelegate
 
 
 class EditTableDialogView(QDialog):
@@ -14,7 +15,7 @@ class EditTableDialogView(QDialog):
     def setupUi(self):
         if not self.objectName():
             self.setObjectName(u"EditTableDialog")
-        self.resize(660, 400)
+        self.resize(740, 400)
         self.setWindowTitle(u"Edit Table")
 
         self.__gridLayout = QGridLayout(self)
@@ -62,6 +63,7 @@ class EditTableDialogView(QDialog):
         self.__lengthLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lengthSpinBox = QSpinBox(self)
         self.lengthSpinBox.setRange(0, 4000)
+        self.lengthSpinBox.setSpecialValueText("DEFAULT")
         self.__horizontalLayout_5.addWidget(self.__lengthLabel)
         self.__horizontalLayout_5.addWidget(self.lengthSpinBox)
         self.__horizontalLayout_5.setStretch(0, 5)
@@ -76,7 +78,9 @@ class EditTableDialogView(QDialog):
         self.tableView.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
         self.tableView.setModel(self.__ObtainedTable.getTableColumnsModel())
         dataTypesComboDelegate = ComboBoxDelegate(self.__dataTypes, self.tableView)
+        lengthSpinBoxDelegate = SpinBoxDelegate(0, 4000, self.tableView)
         self.tableView.setItemDelegateForColumn(1, dataTypesComboDelegate)
+        self.tableView.setItemDelegateForColumn(2, lengthSpinBoxDelegate)
         header = self.tableView.horizontalHeader()
         header.setDefaultAlignment(Qt.AlignLeft)
         header.setSectionResizeMode(QHeaderView.Stretch)

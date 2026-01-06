@@ -23,7 +23,7 @@ class RelationshipsController(ConnectionsController):
         self.__isContextMenuAtWork = False
 
     def setFirstSelectedColumnName(self):
-        obtainedTableColumns = self.FirstClickedTable.getTableColumns()
+        obtainedTableColumns = self._FirstClickedTable.getTableColumns()
 
         selectedColumnName = self.__displayColumnSelectionDialog(obtainedTableColumns)
         if selectedColumnName is None:
@@ -32,7 +32,7 @@ class RelationshipsController(ConnectionsController):
         return True
 
     def setSecondSelectedColumnName(self):
-        obtainedTableColumns = self.SecondClickedTable.getTableColumns()
+        obtainedTableColumns = self._SecondClickedTable.getTableColumns()
 
         selectedColumnName = self.__displayColumnSelectionDialog(obtainedTableColumns)
         if selectedColumnName is None:
@@ -45,8 +45,8 @@ class RelationshipsController(ConnectionsController):
         return ColumnSelectionDialog.displayDialog()
 
     def __setForeignKeys(self):
-        FirstTableColumnsModel = self.FirstClickedTable.getTableColumnsModel()
-        SecondTableColumnsModel = self.SecondClickedTable.getTableColumnsModel()
+        FirstTableColumnsModel = self._FirstClickedTable.getTableColumnsModel()
+        SecondTableColumnsModel = self._SecondClickedTable.getTableColumnsModel()
 
         if not FirstTableColumnsModel.setForeignKeyByColumnName(self.__firstSelectedColumnName):
             self.__isFirstSelectedColumnPK = True
@@ -72,7 +72,7 @@ class RelationshipsController(ConnectionsController):
     def add_1_1_Relationship(self):
         self.__setForeignKeys()
         if self.__isFirstSelectedColumnPK and self.__isSecondSelectedColumnPK:
-            self.__RelationshipsModel.add_1_1_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+            self.__RelationshipsModel.add_1_1_Relationship(self._FirstClickedTable, self._SecondClickedTable,
                                                            self.__firstSelectedColumnName, self.__secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
@@ -81,7 +81,7 @@ class RelationshipsController(ConnectionsController):
     def add_1_n_Relationship(self):
         self.__setForeignKeys()
         if self.__isFirstSelectedColumnPK and not self.__isSecondSelectedColumnPK:
-            self.__RelationshipsModel.add_1_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+            self.__RelationshipsModel.add_1_n_Relationship(self._FirstClickedTable, self._SecondClickedTable,
                                                            self.__firstSelectedColumnName, self.__secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
@@ -90,7 +90,7 @@ class RelationshipsController(ConnectionsController):
     def add_n_n_Relationship(self):
         self.__setForeignKeys()
         if not self.__isFirstSelectedColumnPK and not self.__isSecondSelectedColumnPK:
-            self.__RelationshipsModel.add_n_n_Relationship(self.FirstClickedTable, self.SecondClickedTable,
+            self.__RelationshipsModel.add_n_n_Relationship(self._FirstClickedTable, self._SecondClickedTable,
                                                            self.__firstSelectedColumnName, self.__secondSelectedColumnName)
         else:
             self.displayWrongRelationshipDialog()
@@ -112,7 +112,7 @@ class RelationshipsController(ConnectionsController):
         print("edit")
 
     def selectDrawRelationshipBeingDrawn(self, cursorPosition):
-        self.__RelationshipsView.drawRelationshipBeingDrawn(self.FirstClickedTable, cursorPosition)
+        self.__RelationshipsView.drawRelationshipBeingDrawn(self._FirstClickedTable, cursorPosition)
 
     def selectDrawRelationships(self):
         self.__RelationshipsView.drawRelationships()

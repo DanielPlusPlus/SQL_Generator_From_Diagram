@@ -26,7 +26,7 @@ class InheritancesController(ConnectionsController):
         return self.__isInheritanceBeingDrawn
 
     def addInheritance(self):
-        self.__InheritancesModel.addInheritance(self.FirstClickedTable, self.SecondClickedTable)
+        self.__InheritancesModel.addInheritance(self._FirstClickedTable, self._SecondClickedTable)
         self.resetTables()
 
     def deleteInheritance(self, cursorPosition):
@@ -45,7 +45,7 @@ class InheritancesController(ConnectionsController):
         print("edit")
 
     def selectDrawInheritanceBeingDrawn(self, cursorPosition):
-        self.__InheritancesView.drawInheritanceBeingDrawn(self.FirstClickedTable, cursorPosition)
+        self.__InheritancesView.drawInheritanceBeingDrawn(self._FirstClickedTable, cursorPosition)
 
     def selectDrawInheritances(self):
         self.__InheritancesView.drawInheritances()

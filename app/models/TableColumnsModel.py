@@ -30,7 +30,7 @@ class TableColumnsModel(QAbstractTableModel):
             elif column == 1:
                 return self.__columns[row]["dataType"]
             elif column == 2:
-                return self.__columns[row]["length"]
+                return "DEFAULT" if self.__columns[row]["length"] == 0 else self.__columns[row]["length"]
             elif column in (3, 4, 5, 6):
                 return ""
 
