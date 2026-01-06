@@ -16,6 +16,7 @@ class TableModel:
         self.__minRowsNumber = minRowsNumber
         self.__rowsNumber = minRowsNumber
         self.__tableNumber = tableNumber
+        self.__isTableCollapsed = False
         if not self.__tableNumber:
             self.__tableName = "New Table"
         else:
@@ -58,6 +59,17 @@ class TableModel:
     def getTableColumns(self):
         return self.__TableColumnsModel.getColumns()
 
+    def getTitleRectangle(self):
+        return QRect(
+            self.getLeft(),
+            self.getTop() - self.getRowHeight(),
+            self.getTableWidth(),
+            self.getRowHeight()
+        )
+
+    def getTableCollapseStatus(self):
+        return self.__isTableCollapsed
+
     def changeTableDimensions(self):
         self.__rowsNumber = max(self.__minRowsNumber, self.__TableColumnsModel.rowCount())
         self.__Rectangle = QRect(
@@ -71,15 +83,27 @@ class TableModel:
         self.__TableColumnsModel = NewTableColumnsModel
 
     def changeTablePosition(self, x, y):
+        if self.__isTableCollapsed:
+            yPos = y + self.getRowHeight() // 2
+        else:
+            yPos = y - (self.getRowHeight() * self.getRowsNumber()) // 2
+
         newRectangle = QRect(
             x - self.getTableWidth() // 2,
-            y - (self.getRowHeight() * self.getRowsNumber()) // 2,
+            yPos,
             self.getTableWidth(),
             self.__rowHeight * self.getRowsNumber()
         )
         self.__Rectangle = newRectangle
 
+    def changeTableCollapseStatus(self):
+        self.__isTableCollapsed = not self.__isTableCollapsed
+
     def contains(self, point):
-        if self.__Rectangle.contains(point):
-            return True
+        if self.__isTableCollapsed:
+            if self.getTitleRectangle().contains(point):
+                return True
+        else:
+            if self.__Rectangle.contains(point):
+                return True
         return False

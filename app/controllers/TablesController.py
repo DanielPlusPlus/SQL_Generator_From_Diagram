@@ -34,6 +34,11 @@ class TablesController:
                 self.__RelationshipsController.deleteRelationshipByTable(ObtainedTable)
                 self.__InheritancesController.deleteInheritanceByTable(ObtainedTable)
 
+    def collapseTable(self, cursorPosition):
+        ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
+        if ObtainedTable is not None:
+            ObtainedTable.changeTableCollapseStatus()
+
     def editTable(self, cursorPosition):
         ObtainedTable = self.__TablesModel.getTableFromPosition(cursorPosition)
         if ObtainedTable is not None:
@@ -69,7 +74,11 @@ class TablesController:
         if ObtainedTable is not None:
             self.__isContextMenuAtWork = True
             self.__TableContextMenuView.exec(globalCursorPosition)
-            if self.__TableContextMenuController.getSelectEditTableStatus():
+            if self.__TableContextMenuController.getSelectCollapseTableStatus():
+                self.__TableContextMenuController.unselectCollapseTable()
+                self.__isContextMenuAtWork = False
+                return TableContextMenuEnum.COLLAPSE
+            elif self.__TableContextMenuController.getSelectEditTableStatus():
                 self.__TableContextMenuController.unselectEditTable()
                 self.__isContextMenuAtWork = False
                 return TableContextMenuEnum.EDIT

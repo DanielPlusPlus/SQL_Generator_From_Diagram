@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class TableContextMenuEnum(Enum):
-    EDIT = 1
-    DELETE = 2
-    NONE = 3
+    COLLAPSE = 1
+    EDIT = 2
+    DELETE = 3
+    NONE = 4

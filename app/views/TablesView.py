@@ -21,21 +21,19 @@ class TablesView:
         Painter.setPen(QPen(QColor(Qt.GlobalColor.black), 2, Qt.PenStyle.SolidLine))
         tables = self.__TablesModel.getTables()
         for ObtainedTable in tables:
-            self.__drawTable(Painter, ObtainedTable)
+            if ObtainedTable.getTableCollapseStatus():
+                self.__drawCollapsedTable(Painter, ObtainedTable)
+            else:
+                self.__drawTable(Painter, ObtainedTable)
 
     def __drawTable(self, Painter, ObtainedTable):
         obtainedTableColumns = ObtainedTable.getTableColumns()
+        titleRectangle = ObtainedTable.getTitleRectangle()
 
         font = QFont("Sans", 10)
         font.setBold(True)
         Painter.setFont(font)
 
-        titleRectangle = QRect(
-            ObtainedTable.getLeft(),
-            ObtainedTable.getTop() - ObtainedTable.getRowHeight(),
-            ObtainedTable.getTableWidth(),
-            ObtainedTable.getRowHeight()
-        )
         Painter.drawText(titleRectangle, Qt.AlignCenter, ObtainedTable.getTableName())
 
         for row in range(ObtainedTable.getRowsNumber()):
@@ -46,3 +44,13 @@ class TablesView:
             if row < len(obtainedTableColumns):
                 Painter.drawText(rowRectangle, Qt.AlignCenter, f"{obtainedTableColumns[row]["columnName"]}")
         Painter.drawRect(ObtainedTable.getRectangle())
+
+    def __drawCollapsedTable(self, Painter, ObtainedTable):
+        titleRectangle = ObtainedTable.getTitleRectangle()
+
+        font = QFont("Sans", 10)
+        font.setBold(True)
+        Painter.setFont(font)
+
+        Painter.drawRect(titleRectangle)
+        Painter.drawText(titleRectangle, Qt.AlignCenter, ObtainedTable.getTableName())
