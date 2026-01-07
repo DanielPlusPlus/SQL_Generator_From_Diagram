@@ -111,7 +111,7 @@ class TableColumnsModel(QAbstractTableModel):
         bottomRight = self.index(self.rowCount() - 1, self.columnCount() - 1)
         self.dataChanged.emit(topLeft, bottomRight, [Qt.DisplayRole, Qt.EditRole, Qt.CheckStateRole])
 
-    def addColumn(self, dataType, length, columnName="Empty Name"):
+    def addColumn(self, columnName, dataType, length):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self.__columns.append({"columnName": columnName, "dataType": dataType, "length": length, "unique": False,
                                "notNull": False, "pk": False, "fk": False})

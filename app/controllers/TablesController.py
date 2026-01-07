@@ -44,7 +44,7 @@ class TablesController:
         if ObtainedTable is not None:
             EditTableDialog = EditTableDialogView(self.__ParentWindow, ObtainedTable)
             EditTableDialog.setupUi()
-            EditTableDialogControl = EditTableDialogController(EditTableDialog, ObtainedTable)
+            EditTableDialogControl = EditTableDialogController(EditTableDialog, self, ObtainedTable)
             EditTableDialog.displayDialog()
 
     def selectTableInTransfer(self, cursorPosition):
@@ -93,3 +93,6 @@ class TablesController:
 
     def getContextMenuAtWorkStatus(self):
         return self.__isContextMenuAtWork
+
+    def checkTableNameUnique(self, tableName):
+        return self.__TablesModel.checkTableNameUnique(tableName)

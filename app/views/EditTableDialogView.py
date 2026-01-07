@@ -1,7 +1,8 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtWidgets import (QComboBox, QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel, QLineEdit,
                                QPushButton, QSpinBox, QTableView, QWidget, QHeaderView)
-
+from PySide6.QtGui import QRegularExpressionValidator
+from app.views.delegates.LineEditDelegate import LineEditDelegate
 from app.views.delegates.ComboBoxDelegate import ComboBoxDelegate
 from app.views.delegates.SpinBoxDelegate import SpinBoxDelegate
 
@@ -10,6 +11,7 @@ class EditTableDialogView(QDialog):
     def __init__(self, ParentWindow, ObtainedTable):
         super().__init__(ParentWindow)
         self.__ObtainedTable = ObtainedTable
+        self.__regex = QRegularExpression(r'^[A-Za-z_][A-Za-z0-9_$#\s]*$')
         self.__dataTypes = ["NUMBER", "FLOAT", "CHAR", "VARCHAR2", "NCHAR", "NVARCHAR2", "DATE", "CLOB", "BLOB"]
 
     def setupUi(self):
@@ -24,6 +26,8 @@ class EditTableDialogView(QDialog):
         self.__tableNameLabel = QLabel(u"Table Name", self)
         self.__tableNameLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.tableNameLineEdit = QLineEdit(self)
+        validator = QRegularExpressionValidator(self.__regex, self.tableNameLineEdit)
+        self.tableNameLineEdit.setValidator(validator)
         self.tableNameLineEdit.setMaxLength(30)
         self.tableNameLineEdit.setText(self.__ObtainedTable.getTableName())
         self.__horizontalLayout.addWidget(self.__tableNameLabel)
@@ -40,6 +44,8 @@ class EditTableDialogView(QDialog):
         self.__columnNameLabel = QLabel(u"Column Name", self)
         self.__columnNameLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.columnNameLineEdit = QLineEdit(self)
+        validator = QRegularExpressionValidator(self.__regex, self.columnNameLineEdit)
+        self.columnNameLineEdit.setValidator(validator)
         self.columnNameLineEdit.setMaxLength(30)
         self.__horizontalLayout_3.addWidget(self.__columnNameLabel)
         self.__horizontalLayout_3.addWidget(self.columnNameLineEdit)
@@ -77,10 +83,13 @@ class EditTableDialogView(QDialog):
         self.tableView.setSelectionMode(QTableView.SelectionMode.SingleSelection)
         self.tableView.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
         self.tableView.setModel(self.__ObtainedTable.getTableColumnsModel())
-        dataTypesComboDelegate = ComboBoxDelegate(self.__dataTypes, self.tableView)
-        lengthSpinBoxDelegate = SpinBoxDelegate(0, 4000, self.tableView)
-        self.tableView.setItemDelegateForColumn(1, dataTypesComboDelegate)
-        self.tableView.setItemDelegateForColumn(2, lengthSpinBoxDelegate)
+        ColumnNameDelegate = LineEditDelegate(self.__regex, 30, self.tableView)
+        DataTypesComboDelegate = ComboBoxDelegate(self.__dataTypes, self.tableView)
+        LengthSpinBoxDelegate = SpinBoxDelegate(0, 4000, self.tableView)
+
+        self.tableView.setItemDelegateForColumn(0, ColumnNameDelegate)
+        self.tableView.setItemDelegateForColumn(1, DataTypesComboDelegate)
+        self.tableView.setItemDelegateForColumn(2, LengthSpinBoxDelegate)
         header = self.tableView.horizontalHeader()
         header.setDefaultAlignment(Qt.AlignLeft)
         header.setSectionResizeMode(QHeaderView.Stretch)

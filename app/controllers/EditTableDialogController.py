@@ -1,12 +1,15 @@
 from PySide6.QtWidgets import QTableView
 from copy import deepcopy
+from re import match
 
+from app.views.ErrorDialogView import ErrorDialogView
 from app.models.TableColumnsModel import TableColumnsModel
 
 
 class EditTableDialogController:
-    def __init__(self, EditTableDialogView, ObtainedTable):
+    def __init__(self, EditTableDialogView, TablesController, ObtainedTable):
         self.__EditTableDialogView = EditTableDialogView
+        self.__TablesController = TablesController
         self.__ObtainedTable = ObtainedTable
 
         ObtainedTableColumnsModel = ObtainedTable.getTableColumnsModel()
@@ -27,11 +30,17 @@ class EditTableDialogController:
         dataType = self.__EditTableDialogView.dataTypeComboBox.currentText()
         length = self.__EditTableDialogView.lengthSpinBox.value()
 
-        self.__TempTableColumnsModel.addColumn(dataType, length, columnName)
+        if columnName == "":
+            dialogTitle = "ERROR"
+            dialogText = f"Column Name is Empty"
+            ErrorDialog = ErrorDialogView(self.__EditTableDialogView, dialogTitle, dialogText)
+            ErrorDialog.displayDialog()
+        else:
+            self.__TempTableColumnsModel.addColumn(columnName, dataType, length)
 
-        self.__EditTableDialogView.columnNameLineEdit.clear()
-        self.__EditTableDialogView.dataTypeComboBox.setCurrentIndex(0)
-        self.__EditTableDialogView.lengthSpinBox.setValue(0)
+            self.__EditTableDialogView.columnNameLineEdit.clear()
+            self.__EditTableDialogView.dataTypeComboBox.setCurrentIndex(0)
+            self.__EditTableDialogView.lengthSpinBox.setValue(0)
 
     def __selectDeleteColumn(self):
         selectedRows = self.__EditTableDialogView.tableView.selectionModel().selectedRows()
@@ -54,14 +63,30 @@ class EditTableDialogController:
         self.__EditTableDialogView.reject()
 
     def __selectOK(self):
-        self.__editTableName()
-        self.__editTableColumns()
-        self.__editTableDimensions()
-        self.__EditTableDialogView.accept()
+        if self.__editTableName():
+            self.__editTableColumns()
+            self.__editTableDimensions()
+            self.__EditTableDialogView.accept()
 
     def __editTableName(self):
         newName = self.__EditTableDialogView.tableNameLineEdit.text()
-        self.__ObtainedTable.editTableName(newName)
+
+        if newName == self.__ObtainedTable.getTableName():
+            return True
+
+        if newName == "":
+            dialogText = f"Table Name is Empty"
+        elif self.__TablesController.checkTableNameUnique(newName):
+            self.__ObtainedTable.editTableName(newName)
+            return True
+        else:
+            dialogText = f"Table Name is not Unique"
+
+        dialogTitle = "ERROR"
+        ErrorDialog = ErrorDialogView(self.__EditTableDialogView, dialogTitle, dialogText)
+        ErrorDialog.displayDialog()
+
+        return False
 
     def __editTableColumns(self):
         self.__ObtainedTable.changeTableColumnsModel(self.__TempTableColumnsModel)

@@ -7,8 +7,8 @@ class RelationshipContextMenuView(QMenu):
         super().__init__(ParentWindow)
 
     def setupUI(self):
-        self.actionEditRelationship = QAction("Edit relationship", self)
-        self.actionDeleteRelationship = QAction("Delete relationship", self)
+        self.actionEditRelationship = QAction("Edit Relationship", self)
+        self.actionDeleteRelationship = QAction("Delete Relationship", self)
 
         self.addAction(self.actionEditRelationship)
         self.addAction(self.actionDeleteRelationship)

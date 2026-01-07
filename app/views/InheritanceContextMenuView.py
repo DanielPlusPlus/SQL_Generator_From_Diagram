@@ -7,8 +7,8 @@ class InheritanceContextMenuView(QMenu):
         super().__init__(ParentWindow)
 
     def setupUI(self):
-        self.actionEditInheritance = QAction("Edit inheritance", self)
-        self.actionDeleteInheritance = QAction("Delete inheritance", self)
+        self.actionEditInheritance = QAction("Edit Inheritance", self)
+        self.actionDeleteInheritance = QAction("Delete Inheritance", self)
 
         self.addAction(self.actionEditInheritance)
         self.addAction(self.actionDeleteInheritance)

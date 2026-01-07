@@ -30,3 +30,9 @@ class TablesModel:
             if ObtainedTable.contains(QPoint(position.x(), position.y())):
                 return ObtainedTable
         return None
+
+    def checkTableNameUnique(self, tableName):
+        for ObtainedTable in self.tables:
+            if ObtainedTable.getTableName() == tableName:
+                return False
+        return True
