@@ -11,7 +11,7 @@ class DrawingAreaController:
         self.__DrawingAreaView = None
         self.__cursorPosition = QPoint()
         self.__MainWindowController = None
-        self.__ToolBarController = None
+        self.__MenuBarController = None
         self.__TablesController = None
         self.__RelationshipsController = None
         self.__InheritancesController = None
@@ -22,8 +22,8 @@ class DrawingAreaController:
     def setMainWindowController(self, MainWindowController):
         self.__MainWindowController = MainWindowController
 
-    def setToolBarController(self, ToolBarController):
-        self.__ToolBarController = ToolBarController
+    def setMenuBarController(self, MenuBarController):
+        self.__MenuBarController = MenuBarController
 
     def setTablesController(self, TablesController):
         self.__TablesController = TablesController
@@ -39,63 +39,64 @@ class DrawingAreaController:
         self.__MainWindowController.updateStatusBarInView(self.__cursorPosition)
 
     def handleMousePress(self, event):
+        self.__unselectCloseMainWindowWithoutConfirmation()
         if event.button() == Qt.MouseButton.LeftButton:
-            if self.__ToolBarController.getCreateTableToolStatus():
+            if self.__MenuBarController.getCreateTableToolStatus():
                 self.__TablesController.addTable(self.__cursorPosition)
-                self.__ToolBarController.unselectCreateTableTool()
+                self.__MenuBarController.unselectCreateTableTool()
 
-            elif (self.__ToolBarController.getCreate_1_1_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_1_1_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.__RelationshipsController.setFirstClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setFirstSelectedColumnName():
-                        self.__ToolBarController.changeStatusToAfterClick_1_1_RelTool()
+                        self.__MenuBarController.changeStatusToAfterClick_1_1_RelTool()
                         self.__RelationshipsController.selectRelationshipBeingDrawn()
-            elif (self.__ToolBarController.getCreate_1_1_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_1_1_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
                         self.__RelationshipsController.add_1_1_Relationship()
-                        self.__ToolBarController.unselectCreate_1_1_RelTool()
+                        self.__MenuBarController.unselectCreate_1_1_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
-            elif (self.__ToolBarController.getCreate_1_n_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_1_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.__RelationshipsController.setFirstClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setFirstSelectedColumnName():
-                        self.__ToolBarController.changeStatusToAfterClick_1_n_RelTool()
+                        self.__MenuBarController.changeStatusToAfterClick_1_n_RelTool()
                         self.__RelationshipsController.selectRelationshipBeingDrawn()
-            elif (self.__ToolBarController.getCreate_1_n_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_1_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
                         self.__RelationshipsController.add_1_n_Relationship()
-                        self.__ToolBarController.unselectCreate_1_n_RelTool()
+                        self.__MenuBarController.unselectCreate_1_n_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
-            elif (self.__ToolBarController.getCreate_n_n_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_n_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.__RelationshipsController.setFirstClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setFirstSelectedColumnName():
-                        self.__ToolBarController.changeStatusToAfterClick_n_n_RelTool()
+                        self.__MenuBarController.changeStatusToAfterClick_n_n_RelTool()
                         self.__RelationshipsController.selectRelationshipBeingDrawn()
-            elif (self.__ToolBarController.getCreate_n_n_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_n_n_RelToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__RelationshipsController.setSecondClickedTable(self.__cursorPosition):
                     if self.__RelationshipsController.setSecondSelectedColumnName():
                         self.__RelationshipsController.add_n_n_Relationship()
-                        self.__ToolBarController.unselectCreate_n_n_RelTool()
+                        self.__MenuBarController.unselectCreate_n_n_RelTool()
                         self.__RelationshipsController.unselectRelationshipBeingDrawn()
 
-            elif (self.__ToolBarController.getCreateInheritanceToolStatus()
+            elif (self.__MenuBarController.getCreateInheritanceToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_BEFORE_CLICK):
                 if self.__InheritancesController.setFirstClickedTable(self.__cursorPosition):
-                    self.__ToolBarController.changeStatusToAfterClickInheritanceTool()
+                    self.__MenuBarController.changeStatusToAfterClickInheritanceTool()
                     self.__InheritancesController.selectInheritanceBeingDrawn()
-            elif (self.__ToolBarController.getCreateInheritanceToolStatus()
+            elif (self.__MenuBarController.getCreateInheritanceToolStatus()
                   is ConnectionsStatusEnum.IN_MOTION_AFTER_CLICK):
                 if self.__InheritancesController.setSecondClickedTable(self.__cursorPosition):
                     self.__InheritancesController.addInheritance()
-                    self.__ToolBarController.unselectCreateInheritanceTool()
+                    self.__MenuBarController.unselectCreateInheritanceTool()
                     self.__InheritancesController.unselectInheritanceBeingDrawn()
 
             elif self.__TablesController.getTableInTransferStatus():
@@ -104,28 +105,30 @@ class DrawingAreaController:
                 self.__TablesController.unselectContextMenuAtWork()
             elif self.__RelationshipsController.getContextMenuAtWorkStatus():
                 self.__RelationshipsController.unselectContextMenuAtWork()
+            elif self.__InheritancesController.getContextMenuAtWorkStatus():
+                self.__InheritancesController.unselectContextMenuAtWork()
             else:
                 self.__TablesController.selectTableInTransfer(self.__cursorPosition)
         elif event.button() == Qt.MouseButton.RightButton:
-            if self.__ToolBarController.getCreateTableToolStatus():
-                self.__ToolBarController.unselectCreateTableTool()  # anulowanie rysowania (czy dobrze?)
+            if self.__MenuBarController.getCreateTableToolStatus():
+                self.__MenuBarController.unselectCreateTableTool()
 
-            elif (self.__ToolBarController.getCreate_1_1_RelToolStatus()
+            elif (self.__MenuBarController.getCreate_1_1_RelToolStatus()
                   is not ConnectionsStatusEnum.NOT_IN_MOTION):
                 self.__RelationshipsController.unselectRelationshipBeingDrawn()
-                self.__ToolBarController.unselectCreate_1_1_RelTool()
-            elif (self.__ToolBarController.getCreate_1_n_RelToolStatus()
+                self.__MenuBarController.unselectCreate_1_1_RelTool()
+            elif (self.__MenuBarController.getCreate_1_n_RelToolStatus()
                   is not ConnectionsStatusEnum.NOT_IN_MOTION):
                 self.__RelationshipsController.unselectRelationshipBeingDrawn()
-                self.__ToolBarController.unselectCreate_1_n_RelTool()
-            elif (self.__ToolBarController.getCreate_n_n_RelToolStatus()
+                self.__MenuBarController.unselectCreate_1_n_RelTool()
+            elif (self.__MenuBarController.getCreate_n_n_RelToolStatus()
                   is not ConnectionsStatusEnum.NOT_IN_MOTION):
                 self.__RelationshipsController.unselectRelationshipBeingDrawn()
-                self.__ToolBarController.unselectCreate_n_n_RelTool()
-            elif (self.__ToolBarController.getCreateInheritanceToolStatus()
+                self.__MenuBarController.unselectCreate_n_n_RelTool()
+            elif (self.__MenuBarController.getCreateInheritanceToolStatus()
                   is not ConnectionsStatusEnum.NOT_IN_MOTION):
                 self.__InheritancesController.unselectInheritanceBeingDrawn()
-                self.__ToolBarController.unselectCreateInheritanceTool()
+                self.__MenuBarController.unselectCreateInheritanceTool()
 
             elif self.__TablesController.getTableInTransferStatus():
                 pass
@@ -133,6 +136,8 @@ class DrawingAreaController:
                 self.__TablesController.unselectContextMenuAtWork()
             elif self.__RelationshipsController.getContextMenuAtWorkStatus():
                 self.__RelationshipsController.unselectContextMenuAtWork()
+            elif self.__InheritancesController.getContextMenuAtWorkStatus():
+                self.__InheritancesController.unselectContextMenuAtWork()
             elif (not self.__TablesController.getContextMenuAtWorkStatus()
                   and not self.__RelationshipsController.getContextMenuAtWorkStatus()
                   and not self.__InheritancesController.getContextMenuAtWorkStatus()):
@@ -161,7 +166,7 @@ class DrawingAreaController:
                         self.__InheritancesController.deleteInheritance(self.__cursorPosition)
 
     def handlePaintEvent(self):
-        if self.__ToolBarController.getCreateTableToolStatus():
+        if self.__MenuBarController.getCreateTableToolStatus():
             self.__TablesController.selectDrawTempTable(self.__cursorPosition)
         elif self.__TablesController.getTableInTransferStatus():
             self.__TablesController.updateTableInTransferPosition(self.__cursorPosition)
@@ -182,3 +187,6 @@ class DrawingAreaController:
 
     def __convertCursorPositionToGlobal(self, cursorPosition):
         return self.__DrawingAreaView.mapToGlobal(cursorPosition)
+
+    def __unselectCloseMainWindowWithoutConfirmation(self):
+        self.__MainWindowController.unselectCloseWithoutConfirmation()

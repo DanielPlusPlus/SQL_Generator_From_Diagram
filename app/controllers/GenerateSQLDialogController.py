@@ -9,8 +9,9 @@ from app.controllers.ExecutionSQLDialogController import ExecutionSQLDialogContr
 
 
 class GenerateSQLDialogController:
-    def __init__(self, ParentWindow, GenerateSQLDialogView):
+    def __init__(self, ParentWindow, MainWindowController, GenerateSQLDialogView):
         self.__ParentWindow = ParentWindow
+        self.__MainWindowController = MainWindowController
         self.__GenerateSQLDialogView = GenerateSQLDialogView
 
         self.__GenerateSQLDialogView.copyCodeButton.clicked.connect(self.__selectCopyCode)
@@ -45,6 +46,7 @@ class GenerateSQLDialogController:
                     dialogText = "SQL code has been successfully saved to a file"
                     InfoDialog = InfoDialogView(self.__ParentWindow, dialogTitle, dialogText)
                     InfoDialog.displayDialog()
+                    self.__MainWindowController.selectCloseWithoutConfirmation()
             except Exception as e:
                 dialogTitle = "ERROR"
                 dialogText = f"Failed to save file:\n{str(e)}"

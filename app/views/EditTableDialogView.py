@@ -54,7 +54,7 @@ class EditTableDialogView(QDialog):
         self.__gridLayout.addLayout(self.__horizontalLayout_3, 1, 0, 1, 1)
 
         self.__horizontalLayout_4 = QHBoxLayout()
-        self.__dataTypeLabel = QLabel(u"Data type", self)
+        self.__dataTypeLabel = QLabel(u"Data Type", self)
         self.__dataTypeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.dataTypeComboBox = QComboBox(self)
         self.dataTypeComboBox.addItems(self.__dataTypes)
